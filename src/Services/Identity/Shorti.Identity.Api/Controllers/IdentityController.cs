@@ -30,7 +30,7 @@ namespace Shorti.Identity.Api.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(
-                    loginDto.Email,
+                    loginDto.Username,
                     loginDto.Password,
                     loginDto.RememberMe,
                     lockoutOnFailure: false);
@@ -58,7 +58,7 @@ namespace Shorti.Identity.Api.Controllers
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, registerDto.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, registerDto.Username, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, registerDto.Password);
 
                 if (result.Succeeded)

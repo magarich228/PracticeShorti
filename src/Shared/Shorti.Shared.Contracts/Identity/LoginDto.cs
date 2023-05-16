@@ -5,8 +5,7 @@ namespace Shorti.Shared.Contracts.Identity
     public class LoginDto
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         [Required]
         [DataType(DataType.Password)]
