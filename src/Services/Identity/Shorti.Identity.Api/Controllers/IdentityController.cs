@@ -25,12 +25,12 @@ namespace Shorti.Identity.Api.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(
-                    loginDto.Username,
+                    loginDto.UserName,
                     loginDto.Password,
                     loginDto.RememberMe,
                     lockoutOnFailure: false);
@@ -52,13 +52,13 @@ namespace Shorti.Identity.Api.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, registerDto.Username, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, registerDto.UserName, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, registerDto.Password);
 
                 if (result.Succeeded)
