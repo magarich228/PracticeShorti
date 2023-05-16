@@ -79,7 +79,9 @@ namespace Shorti.Identity.Api.Controllers
             return BadRequest(ModelState);
         }
 
-        public async Task<IActionResult> OnPost()
+        [HttpPost]
+        [Route("logout")]
+        public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
 
