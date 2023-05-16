@@ -37,7 +37,10 @@ namespace Shorti.Identity.Api.Controllers
 
                 if (result.Succeeded)
                 {
-                    return Ok();
+                    var user = await _userManager.FindByNameAsync(loginDto.UserName);
+                    var userId = await _userManager.GetUserIdAsync(user);
+
+                    return Ok(userId);
                 }
                 else
                 {

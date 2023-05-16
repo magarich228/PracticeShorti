@@ -8,7 +8,7 @@ var connectionString = builder.Configuration.GetConnectionString("ShortiIdentity
 builder.Services.AddDbContext<ShortiIdentityContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>()
     .AddEntityFrameworkStores<ShortiIdentityContext>();
 
 builder.Services.AddControllers();
