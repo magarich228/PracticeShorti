@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shorti.Identity.Api.Data;
+using Shorti.Shared.Contracts.Identity;
+using Shorti.Shared.Kernel;
 
 namespace Shorti.Identity.Api.Controllers
 {
@@ -25,7 +27,9 @@ namespace Shorti.Identity.Api.Controllers
                 return NotFound(userId);
             }
 
-            return Ok(user);
+            var result = Mapping.Map<User, UserDto>(user);
+
+            return Ok(result);
         }
     }
 }

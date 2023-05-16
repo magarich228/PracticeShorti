@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Identity.ApiGateway", "src\Services\ApiGateway\Shorti.Identity.ApiGateway\Shorti.Identity.ApiGateway.csproj", "{789BCBCB-4D8E-4FA1-B491-D981724A5C15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Shared.Kernel", "src\Shared\Shorti.Shared.Kernel\Shorti.Shared.Kernel.csproj", "{692A2002-B0A7-4F2B-8551-743F2F0F6630}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{789BCBCB-4D8E-4FA1-B491-D981724A5C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{789BCBCB-4D8E-4FA1-B491-D981724A5C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{789BCBCB-4D8E-4FA1-B491-D981724A5C15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{692A2002-B0A7-4F2B-8551-743F2F0F6630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692A2002-B0A7-4F2B-8551-743F2F0F6630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692A2002-B0A7-4F2B-8551-743F2F0F6630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692A2002-B0A7-4F2B-8551-743F2F0F6630}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{807371D3-5020-40DF-8792-3E9ACAD6B81D} = {64318058-D383-4E12-B71B-F8DC8F54DD07}
 		{E23F0F0E-3F11-4715-B2D7-F76A260C1F45} = {F7A86D71-C550-466C-9820-197EC27BEC9C}
 		{789BCBCB-4D8E-4FA1-B491-D981724A5C15} = {E23F0F0E-3F11-4715-B2D7-F76A260C1F45}
+		{692A2002-B0A7-4F2B-8551-743F2F0F6630} = {64318058-D383-4E12-B71B-F8DC8F54DD07}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDF9774F-1A58-408A-AAA2-B8F9822EBE6C}
