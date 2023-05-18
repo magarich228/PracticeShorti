@@ -10,3 +10,5 @@
 * Логгирование
 * Тесты
 * межсервисое AMQP взаимодействие
+
+https://kdrenski.com/wp/jwt-authentication-with-asp-net-core-and-identityserver4/
