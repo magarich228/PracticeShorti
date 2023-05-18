@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shorti.Identity.Api.Data;
 using Shorti.Shared.Contracts.Identity;
+using IdentityModel.Client;
 
 namespace Shorti.Identity.Api.Controllers
 {
@@ -9,101 +12,39 @@ namespace Shorti.Identity.Api.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly IUserStore<User> _userStore;
+        private readonly IIdentityServerInteractionService _identityServerInteractionService;
+        private readonly IAuthenticationSchemeProvider _authenticationSchemeProvider;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public IdentityController(
-            SignInManager<User> signInManager,
-            UserManager<User> userManager,
-            IUserStore<User> userStore)
+            IIdentityServerInteractionService identityServerInteractionService,
+            IAuthenticationSchemeProvider authenticationSchemeProvider,
+            IHttpClientFactory httpClientFactory)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _userStore = userStore;
+            _identityServerInteractionService = identityServerInteractionService;
+            _authenticationSchemeProvider = authenticationSchemeProvider;
+            _httpClientFactory = httpClientFactory;
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        [HttpGet]
+        public async Task<IActionResult> Host()
         {
-            if (ModelState.IsValid)
+            var identityClient = _httpClientFactory.CreateClient("IdentityClient");
+            identityClient.BaseAddress = new Uri("http://localhost:5064/");
+
+            var discoveryDocument = await identityClient.GetDiscoveryDocumentAsync();
+
+            identityClient.SetBasicAuthenticationOAuth("magarich228", "@Jope123");
+
+            var client = IdentityConfig.Clients.First();
+            var tokenResponse = await identityClient.RequestTokenAsync(new TokenRequest
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    loginDto.UserName,
-                    loginDto.Password,
-                    loginDto.RememberMe,
-                    lockoutOnFailure: false);
+                ClientId = client.ClientId,
+                ClientSecret = client.ClientSecrets.First().Value,
+                GrantType = client.AllowedGrantTypes.First()
+            });
 
-                if (result.Succeeded)
-                {
-                    var user = await _userManager.FindByNameAsync(loginDto.UserName);
-                    var userId = await _userManager.GetUserIdAsync(user);
-
-                    return Ok(userId);
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-
-                    return BadRequest(ModelState);
-                }
-            }
-
-            return BadRequest(ModelState);
-        }
-
-        [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, registerDto.UserName, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-                if (result.Succeeded)
-                {
-                    var userId = await _userManager.GetUserIdAsync(user);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    return Ok(userId);
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-
-            return BadRequest(ModelState);
-        }
-
-        [HttpPost]
-        [Route("logout")]
-        public async Task<IActionResult> LogOut()
-        {
-            await _signInManager.SignOutAsync();
-
-            return Ok();
-        }
-
-        [NonAction]
-        private User CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<User>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
-                    $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
+            return Ok(tokenResponse);
         }
     }
 }

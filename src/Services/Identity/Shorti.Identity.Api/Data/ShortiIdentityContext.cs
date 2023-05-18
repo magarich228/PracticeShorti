@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿//using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 
-namespace Shorti.Identity.Api.Data;
+//namespace Shorti.Identity.Api.Data;
 
-public class ShortiIdentityContext : IdentityDbContext<User>
-{
-    public ShortiIdentityContext(DbContextOptions<ShortiIdentityContext> options)
-        : base(options)
-    {
-        Database.EnsureCreated();
-    }
+//public class ShortiIdentityContext : IdentityDbContext<User>
+//{
+//    public ShortiIdentityContext(DbContextOptions<ShortiIdentityContext> options)
+//        : base(options)
+//    {
+//        Database.EnsureCreated();
+//    }
 
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-    }
-}
+//    protected override void OnModelCreating(ModelBuilder builder)
+//    {
+//        base.OnModelCreating(builder);
+//    }
+//}
