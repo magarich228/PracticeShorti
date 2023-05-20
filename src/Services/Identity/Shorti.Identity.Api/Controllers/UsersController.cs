@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shorti.Identity.Api.Data;
 using Shorti.Shared.Contracts.Identity;
@@ -8,19 +9,20 @@ namespace Shorti.Identity.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
+        private readonly ShortiIdentityContext _db;
 
-        public UsersController(UserManager<User> userManager)
+        public UsersController(ShortiIdentityContext db)
         {
-            _userManager = userManager;
+            _db = db;
         }
 
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetById([FromRoute] string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _db.Users.FindAsync(new object[] { userId });
 
             if (user == null)
             {

@@ -15,17 +15,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{F7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{D3D4043B-FC49-463F-B3F5-15E7074A8C19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Identity.Api", "src\Services\Identity\Shorti.Identity.Api\Shorti.Identity.Api.csproj", "{95EB96C3-90F8-4047-B7D0-93FA0F0EB223}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shorti.Identity.Api", "src\Services\Identity\Shorti.Identity.Api\Shorti.Identity.Api.csproj", "{95EB96C3-90F8-4047-B7D0-93FA0F0EB223}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{64318058-D383-4E12-B71B-F8DC8F54DD07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Shared.Contracts", "src\Shared\Shorti.Shared.Contracts\Shorti.Shared.Contracts.csproj", "{807371D3-5020-40DF-8792-3E9ACAD6B81D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shorti.Shared.Contracts", "src\Shared\Shorti.Shared.Contracts\Shorti.Shared.Contracts.csproj", "{807371D3-5020-40DF-8792-3E9ACAD6B81D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{E23F0F0E-3F11-4715-B2D7-F76A260C1F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Identity.ApiGateway", "src\Services\ApiGateway\Shorti.Identity.ApiGateway\Shorti.Identity.ApiGateway.csproj", "{789BCBCB-4D8E-4FA1-B491-D981724A5C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shorti.Identity.ApiGateway", "src\Services\ApiGateway\Shorti.Identity.ApiGateway\Shorti.Identity.ApiGateway.csproj", "{789BCBCB-4D8E-4FA1-B491-D981724A5C15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Shared.Kernel", "src\Shared\Shorti.Shared.Kernel\Shorti.Shared.Kernel.csproj", "{692A2002-B0A7-4F2B-8551-743F2F0F6630}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shorti.Shared.Kernel", "src\Shared\Shorti.Shared.Kernel\Shorti.Shared.Kernel.csproj", "{692A2002-B0A7-4F2B-8551-743F2F0F6630}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shorts", "Shorts", "{F6D5BE19-BAC4-4F06-AC1E-12DE58F2143C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.ShortsService.Api", "src\Services\Shorts\Shorti.ShortsService.Api\Shorti.ShortsService.Api.csproj", "{55149134-EE1A-4A8D-9CB6-30E758BD7DC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{692A2002-B0A7-4F2B-8551-743F2F0F6630}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692A2002-B0A7-4F2B-8551-743F2F0F6630}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{692A2002-B0A7-4F2B-8551-743F2F0F6630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55149134-EE1A-4A8D-9CB6-30E758BD7DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55149134-EE1A-4A8D-9CB6-30E758BD7DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55149134-EE1A-4A8D-9CB6-30E758BD7DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55149134-EE1A-4A8D-9CB6-30E758BD7DC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,8 @@ Global
 		{E23F0F0E-3F11-4715-B2D7-F76A260C1F45} = {F7A86D71-C550-466C-9820-197EC27BEC9C}
 		{789BCBCB-4D8E-4FA1-B491-D981724A5C15} = {E23F0F0E-3F11-4715-B2D7-F76A260C1F45}
 		{692A2002-B0A7-4F2B-8551-743F2F0F6630} = {64318058-D383-4E12-B71B-F8DC8F54DD07}
+		{F6D5BE19-BAC4-4F06-AC1E-12DE58F2143C} = {F7A86D71-C550-466C-9820-197EC27BEC9C}
+		{55149134-EE1A-4A8D-9CB6-30E758BD7DC4} = {F6D5BE19-BAC4-4F06-AC1E-12DE58F2143C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDF9774F-1A58-408A-AAA2-B8F9822EBE6C}
