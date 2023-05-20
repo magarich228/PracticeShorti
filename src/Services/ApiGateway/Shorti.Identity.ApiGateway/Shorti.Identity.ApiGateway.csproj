@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Configurations\shorts.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ocelot" Version="18.0.0" />
   </ItemGroup>
 
