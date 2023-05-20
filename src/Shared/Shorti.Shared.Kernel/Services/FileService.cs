@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Shorti.Shared.Kernel.Abstractions;
 
 namespace Shorti.Shared.Kernel.Services
@@ -9,9 +8,7 @@ namespace Shorti.Shared.Kernel.Services
         private readonly IFileDownloader _fileDownloader;
         public string FilePath => _fileDownloader.FilesPath;
 
-        public FileService(
-            IFileDownloader fileDownloader,
-            ILoggerFactory loggerFactory)
+        public FileService(IFileDownloader fileDownloader)
         {
             _fileDownloader = fileDownloader;
         }
