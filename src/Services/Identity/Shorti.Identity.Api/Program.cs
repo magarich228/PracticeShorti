@@ -89,8 +89,6 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseIdentityServer();
-
 app.MapControllers();
 
 app.Run();
