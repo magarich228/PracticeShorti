@@ -2,9 +2,9 @@
 
 namespace Shorti.Shared.Kernel.Abstractions
 {
-    public interface IFileDownloader
+    public interface IFileService
     {
-        string FilesPath { get; }
+        string FilePath { get; }
 
         Task Download(IFormFile file);
     }

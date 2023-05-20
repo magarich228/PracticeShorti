@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Shorti.Identity.Api;
+using Shorti.Shared.Kernel.KernelExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ShortiIdentityContextConnection") ?? 
     throw new InvalidOperationException("Connection string 'ShortiIdentityContextConnection' not found.");
+
+builder.Services.AddKernelServices(builder.Configuration);
 
 builder.Services.AddIdentityServer()
     .AddInMemoryClients(IdentityConfig.Clients)

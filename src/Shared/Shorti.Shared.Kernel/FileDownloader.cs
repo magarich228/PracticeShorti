@@ -9,6 +9,8 @@ namespace Shorti.Shared.Kernel
         private string _filesPath;
         private string _fileDownloaderSettingsKey = "FileDownloader";
 
+        public string FilesPath => _filesPath;
+
         public FileDownloader(string filesPath)
         {
             _filesPath = filesPath;

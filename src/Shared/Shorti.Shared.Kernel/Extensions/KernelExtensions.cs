@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shorti.Shared.Kernel.Abstractions;
+using Shorti.Shared.Kernel.Services;
 
 namespace Shorti.Shared.Kernel.KernelExtensions
 {
@@ -10,6 +11,8 @@ namespace Shorti.Shared.Kernel.KernelExtensions
         {
             services.AddTransient<IFileDownloader, FileDownloader>(services => 
                 new FileDownloader(configuration));
+
+            services.AddTransient<IFileService, FileService>();
 
             return services;
         }

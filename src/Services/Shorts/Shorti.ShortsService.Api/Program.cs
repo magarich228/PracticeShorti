@@ -1,4 +1,8 @@
+using Shorti.Shared.Kernel.KernelExtensions;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddKernelServices(builder.Configuration);
 
 builder.Services.AddControllers();
 
