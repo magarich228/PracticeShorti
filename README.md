@@ -11,5 +11,3 @@
 * Тесты
 * межсервисое AMQP взаимодействие
 * Валидация файла видео и получение id автора при добавлении
-
-https://kdrenski.com/wp/jwt-authentication-with-asp-net-core-and-identityserver4/
