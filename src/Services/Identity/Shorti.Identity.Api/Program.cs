@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Shorti.Identity.Api;
+using Shorti.Shared.Kernel.KernelExtensions;
 using Microsoft.IdentityModel.Tokens;
 using Shorti.Identity.Api.Data;
 using Shorti.Identity.Api.Identity;
@@ -11,8 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ShortiIdentityContextConnection") ?? 
     throw new InvalidOperationException("Connection string 'ShortiIdentityContextConnection' not found.");
 
+builder.Services.AddKernelServices(builder.Configuration);
+
 var identityConfig = builder.Configuration.GetSection("IdentityConfiguration").Get<IdentityConfiguration>() ??
-    throw new InvalidOperationException("Нет конфигурации аутентификации jwt.");
+    throw new InvalidOperationException("РќРµС‚ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё jwt.");
 builder.Services.AddSingleton(identityConfig);
 
 builder.Services.AddTransient<HashService>();
@@ -47,7 +52,31 @@ builder.Services.AddSingleton<IJwtIdentityManager, JwtIdentityManager>();
 builder.Services.AddHostedService<JwtRefreshTokenCache>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
 
 var app = builder.Build();
 
@@ -57,9 +86,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication();;
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseIdentityServer();
 
 app.MapControllers();
 
