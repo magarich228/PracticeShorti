@@ -1,18 +1,21 @@
-﻿//using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-//using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-//namespace Shorti.Identity.Api.Data;
+namespace Shorti.Identity.Api.Data;
 
-//public class ShortiIdentityContext : IdentityDbContext<User>
-//{
-//    public ShortiIdentityContext(DbContextOptions<ShortiIdentityContext> options)
-//        : base(options)
-//    {
-//        Database.EnsureCreated();
-//    }
+public class ShortiIdentityContext : DbContext
+{
+    public DbSet<User> Users { get; set; } = null!;
 
-//    protected override void OnModelCreating(ModelBuilder builder)
-//    {
-//        base.OnModelCreating(builder);
-//    }
-//}
+    public ShortiIdentityContext(DbContextOptions<ShortiIdentityContext> options)
+        : base(options)
+    {
+        Database.Migrate();
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<User>().HasAlternateKey(u => u.UserName);
+
+        base.OnModelCreating(builder);
+    }
+}

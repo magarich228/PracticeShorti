@@ -1,5 +1,5 @@
 # Shorti
-Платформа просмотра коротких видео. Микросервисная реализация с Ef Core, AutoMapper, Ocelot, IdentityServer, автодокументация Swagger. Клиент на React.
+Платформа просмотра коротких видео. Микросервисная реализация с Ef Core, AutoMapper, Ocelot, Elastic Search, IdentityServer, автодокументация Swagger. Клиент на React.
 
 ## Сервисы:
 * Identity
