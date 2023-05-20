@@ -1,0 +1,17 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.App {
+    background-color: black;
+    min-height: 100vh;
+    color: white;
+}
+
+.loginContainer {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
