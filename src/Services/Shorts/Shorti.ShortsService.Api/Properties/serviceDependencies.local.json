@@ -1,13 +1,10 @@
 {
   "dependencies": {
-    "secrets1": {
-      "type": "secrets.user"
-    },
     "mssql1": {
-      "secretStore": "LocalSecretsFile",
+      "secretStore": null,
+      "resourceId": null,
       "type": "mssql.local",
-      "connectionId": "ConnectionStrings:ShortsVideoContext",
-      "dynamicId": null
+      "connectionId": "ConnectionStrings:ShortsVideoContext"
     }
   }
 }

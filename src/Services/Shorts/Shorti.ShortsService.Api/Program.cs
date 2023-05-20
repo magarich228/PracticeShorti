@@ -1,6 +1,15 @@
+using Microsoft.EntityFrameworkCore;
 using Shorti.Shared.Kernel.KernelExtensions;
+using Shorti.ShortsService.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("ShortsContext");
+
+builder.Services.AddDbContext<ShortsContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
 
 builder.Services.AddKernelServices(builder.Configuration);
 

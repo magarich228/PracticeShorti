@@ -6,6 +6,6 @@ namespace Shorti.Shared.Kernel.Abstractions
     {
         string FilePath { get; }
 
-        Task Download(IFormFile file);
+        Task DownloadAsync(IFormFile file, string fileName);
     }
 }

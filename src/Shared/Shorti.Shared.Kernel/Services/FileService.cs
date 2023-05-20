@@ -16,6 +16,6 @@ namespace Shorti.Shared.Kernel.Services
             _fileDownloader = fileDownloader;
         }
 
-        public async Task Download(IFormFile file) => await _fileDownloader.Download(file);
+        public async Task DownloadAsync(IFormFile file, string fileName) => await _fileDownloader.Download(file, fileName);
     }
 }

@@ -24,11 +24,11 @@ namespace Shorti.Shared.Kernel
             _filesPath = path;
         }
 
-        public async Task Download(IFormFile file)
+        public async Task Download(IFormFile file, string fileName)
         {
             ArgumentNullException.ThrowIfNull(file, nameof(file));
 
-            using var newFile = File.Create(_filesPath);
+            using var newFile = File.Create(Path.Combine(_filesPath, fileName));
             using var read = file.OpenReadStream();
 
             await read.CopyToAsync(newFile);

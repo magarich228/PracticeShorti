@@ -1,4 +1,3 @@
-using IdentityServer4.AspNetIdentity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;

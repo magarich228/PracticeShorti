@@ -7,7 +7,8 @@ namespace Shorti.ShortsService.Api.Data
     {
         public DbSet<ShortVideo> Shorts { get; set; } = null!;
 
-        public ShortsContext()
+        public ShortsContext(DbContextOptions<ShortsContext> options)
+            : base(options)
         {
             Database.Migrate();
         }
