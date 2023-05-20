@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shorti.Identity.Api.Data;
 using Shorti.Shared.Contracts.Identity;
@@ -8,6 +9,7 @@ namespace Shorti.Identity.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly ShortiIdentityContext _db;
