@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Shorti.Identity.Api;
 using Shorti.Shared.Kernel.KernelExtensions;
 using Microsoft.IdentityModel.Tokens;
 using Shorti.Identity.Api.Data;
