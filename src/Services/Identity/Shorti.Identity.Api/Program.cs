@@ -10,7 +10,7 @@ using Shorti.Identity.Api.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("ShortiIdentityContextConnection") ?? 
+var connectionString = builder.Configuration.GetConnectionString("ShortiIdentityContextConnection") ??
     throw new InvalidOperationException("Connection string 'ShortiIdentityContextConnection' not found.");
 
 builder.Services.AddKernelServices(builder.Configuration);
@@ -50,18 +50,26 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddSingleton<IJwtIdentityManager, JwtIdentityManager>();
 builder.Services.AddHostedService<JwtRefreshTokenCache>();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(swagger =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    swagger.SwaggerDoc("v1", new OpenApiInfo
     {
-        Type = SecuritySchemeType.OAuth2,
-        In = ParameterLocation.Header,
-        Name = "Authorization",
-        Scheme = "Bearer"
+        Version = "v1",
+        Title = "JWT Token Authentication",
+        Description = "Shorti Identity Service API"
     });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+    });
+
+    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -72,7 +80,7 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] { }
+            new string[] {}
         }
     });
 });
