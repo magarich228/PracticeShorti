@@ -41,7 +41,7 @@ namespace Shorti.Identity.Api.Controllers
         [HttpPut("avatarUpdate")]
         public async Task<IActionResult> UpdateAvatar(IFormFile avatar)
         {
-            string path = $"avatars/{Path.GetRandomFileName()}";
+            string fileName = $"{Guid.NewGuid()}{Path.GetExtension(avatar.FileName)}";
 
             var user = (User)HttpContext.Items["User"]!;
 
@@ -50,15 +50,15 @@ namespace Shorti.Identity.Api.Controllers
                 return Problem(detail: "Не найден пользователь.");
             }
 
-            await _fileService.DownloadAsync(avatar, path);
-            var isDownloaded = System.IO.File.Exists(Path.Combine(_fileService.FilePath, path));
+            await _fileService.DownloadAsync(avatar, fileName);
+            var isDownloaded = System.IO.File.Exists(Path.Combine(_fileService.FilePath, fileName));
 
             if (!isDownloaded)
             {
                 return Problem(detail: "Ошибка загрузки аватара.");
             }
 
-            user.AvatarPath = path;
+            user.AvatarPath = $"avatars/{fileName}";
 
             _db.Users.Update(user);
             await _db.SaveChangesAsync();

@@ -7,6 +7,7 @@ using Shorti.Identity.Api.Data;
 using Shorti.Identity.Api.Identity;
 using Shorti.Identity.Api.Identity.Abstractions;
 using Shorti.Identity.Api.Identity.Extensions;
+using Shorti.Identity.Api.Identity.JwtPipeline;
 using Shorti.Identity.Api.Services;
 using Shorti.Shared.Contracts.Identity;
 using System.IdentityModel.Tokens.Jwt;
@@ -88,6 +89,7 @@ namespace Shorti.Identity.Api.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [JwtAuthorize]
         public async Task<ActionResult<LoginResultDto>> RefreshToken([FromBody] RefreshTokenRequestDto request)
         {
             try
@@ -117,6 +119,7 @@ namespace Shorti.Identity.Api.Controllers
         }
 
         [HttpDelete("logout")]
+        [JwtAuthorize]
         public async Task<ActionResult> Logout()
         {
             var token = await HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.TokenName);
@@ -145,7 +148,7 @@ namespace Shorti.Identity.Api.Controllers
             var claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
