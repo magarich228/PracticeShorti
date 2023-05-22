@@ -15,6 +15,7 @@ export default function Main() {
                     videos={videos} 
                     curVideo={curVideo} 
                     setCurVideo={(curIndex) => setCurVideo(curIndex)} 
+                    like={true}
                 />
             </main>
             <aside className="MainAside">

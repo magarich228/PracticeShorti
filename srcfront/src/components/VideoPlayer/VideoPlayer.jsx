@@ -1,10 +1,9 @@
 import React from 'react'
 import { useEffect, useRef, useState } from "react";
-import VolumeIcon from '../UI/VolumeIcon';
 import s from './VideoPlayer.module.css'
-import NavBar from '../NavBar/NavBar';
+import VolumeIcon from '../UI/VolumeIcon'
 
-export default function VideoPlayer({videos, curVideo, setCurVideo}) {
+export default function VideoPlayer({videos, curVideo, setCurVideo, children, like}) {
     const feedEl = useRef();
     const isFirstVid = useRef(true);
     const [isVideosMuted, setIsVideosMuted] = useState(true);
@@ -51,7 +50,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo}) {
     };
 
     return (
-        <div>
+        <div className={s.video_wrapper}>
             <div className={s.videos_container}>
                 <div className={s.feed} ref={feedEl}>
                     { 
@@ -67,6 +66,29 @@ export default function VideoPlayer({videos, curVideo, setCurVideo}) {
                     }
                 </div>
             </div>
+            {children}
+            {
+                like &&
+                <div></div>
+            }
+
+            <div className={s.mutedBtn}>
+                <button onClick={muteVideo}>
+                    <VolumeIcon isMuted={isVideosMuted} />    
+                </button>
+            </div>
+
+            <div className={s.pauseBtn}>
+                <button>
+                    Пауза
+                </button>
+            </div>
+
+            <div className={s.NextPrevBtns}>
+                <button onClick={prev}>Prev</button>
+                <button onClick={next}>Next</button>
+            </div>
+
             {/* <div className={s.btns}>
                 <button onClick={prev}>Prev</button>
                 <button onClick={next}>Next</button>
