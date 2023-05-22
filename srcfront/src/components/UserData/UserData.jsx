@@ -6,7 +6,9 @@ export default function UserData({children}) {
     <div className={s.container}>
         <div className={s.inner}>
             <div className={s.avatar_box}>
-                {/* кортиношка */}
+                <div className={s.img}>
+                    <img src="/images/user.png" alt="usericon" />
+                </div>
             </div>
             <div className={s.data}>
                 <div className={s.text}>

@@ -10,15 +10,39 @@
     flex-basis: 20%;
 }
 
+.avatar_box .img {
+    border: 1px solid white;
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img img {
+    width: 75%;
+    height: 75%;
+}
+
 .data {
     flex-basis: 80%;
     display: flex;
+    padding-right: 20px;
 }
 
 .text {
-    
+    flex-basis: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px 0;
 }
 
 .btn {
-
+    flex-basis: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
