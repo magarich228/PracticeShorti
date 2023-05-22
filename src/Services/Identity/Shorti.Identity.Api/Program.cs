@@ -8,6 +8,7 @@ using Shorti.Identity.Api.Identity;
 using Shorti.Identity.Api.Identity.Abstractions;
 using Shorti.Identity.Api.Services;
 using System.Text;
+using Shorti.Identity.Api.Identity.JwtPipeline;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ShortiIdentityContextConnection") ??
@@ -92,6 +93,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
+
+app.UseJwtContextAttach();
 
 app.UseAuthentication();
 app.UseAuthorization();
