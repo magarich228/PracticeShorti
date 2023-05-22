@@ -7,9 +7,9 @@ using Shorti.Identity.Api.Data;
 using Shorti.Identity.Api.Identity;
 using Shorti.Identity.Api.Identity.Abstractions;
 using Shorti.Identity.Api.Identity.Extensions;
-using Shorti.Identity.Api.Identity.JwtPipeline;
 using Shorti.Identity.Api.Services;
 using Shorti.Shared.Contracts.Identity;
+using Shorti.Shared.Kernel.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
