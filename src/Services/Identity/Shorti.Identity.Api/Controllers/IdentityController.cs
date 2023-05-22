@@ -36,8 +36,8 @@ namespace Shorti.Identity.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("auth")]
-        public ActionResult<LoginResultDto> Authentificate([FromBody] LoginDto loginRequest)
+        [HttpPost("login")]
+        public ActionResult<LoginResultDto> Login([FromBody] LoginDto loginRequest)
         {
             var user = _db.Users.FirstOrDefault(u => u.UserName == loginRequest.UserName);
 
