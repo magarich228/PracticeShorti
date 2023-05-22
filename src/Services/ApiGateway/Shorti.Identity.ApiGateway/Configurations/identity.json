@@ -34,7 +34,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Identity/logout",
-      "UpstreamHttpMethod": [ "POST" ]
+      "UpstreamHttpMethod": [ "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/Users/{userId}",
