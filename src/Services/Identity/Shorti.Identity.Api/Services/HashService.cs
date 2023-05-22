@@ -34,12 +34,12 @@ namespace Shorti.Identity.Api.Services
 
             if (string.IsNullOrEmpty(hashedPassword))
             {
-                return false;
+                throw new ArgumentNullException(nameof(hashedPassword));
             }
 
             if (string.IsNullOrEmpty(password))
             {
-                throw new ArgumentNullException("password");
+                throw new ArgumentNullException(nameof(password));
             }
 
             byte[] src = Convert.FromBase64String(hashedPassword);
