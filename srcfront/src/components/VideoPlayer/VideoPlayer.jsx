@@ -1,30 +1,35 @@
 import React from 'react'
 import { useEffect, useRef, useState } from "react";
 import s from './VideoPlayer.module.css'
-import VolumeIcon from '../UI/VolumeIcon'
+import VolumeIcon from '../UI/VolumeIcon/VolumeIcon'
+import PlayIcon from '../UI/PlayIcon/PlayIcon';
+import LikeIcon from '../UI/LikeIcon/LikeIcon';
+import ArrowDown from '../UI/ArrowDown/ArrowDown';
+import ArrowUp from '../UI/ArrowUp/ArrowUp';
 
 export default function VideoPlayer({videos, curVideo, setCurVideo, children, like}) {
     const feedEl = useRef();
     const isFirstVid = useRef(true);
     const [isVideosMuted, setIsVideosMuted] = useState(true);
+    const [isPaused, setIsPaused] = useState(false);
 
     useEffect(() => {
         const video = document.querySelector("." + s.video+curVideo);
         const h = document.querySelector("." + s.video_block).clientHeight;
 
-        if (!isFirstVid.current) {
+        if (!isFirstVid.current && !isPaused) {
             video.play();
-            
-            if (!isVideosMuted) {
-                video.muted = false;
-            }
         } 
+
+        if (!isFirstVid.current && !isVideosMuted) {
+            video.muted = false;
+        }
 
         isFirstVid.current = false;
 
         feedEl.current.style.transform = `translateY(-${h * curVideo}px)`;
 
-    }, [curVideo, isVideosMuted]);
+    }, [curVideo, isVideosMuted, isPaused]);
 
     function next() {
         if (curVideo < videos.length - 1) {
@@ -43,10 +48,20 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
     const muteVideo = (e) => {
         const currentVideo = document.querySelector("."+s.video+curVideo);
 
-        if (isFirstVid.current) currentVideo.play();
-
         currentVideo.muted = !currentVideo.muted;
         setIsVideosMuted(!isVideosMuted);
+    };
+
+    const pauseVideo = (e) => {
+        const currentVideo = document.querySelector("."+s.video+curVideo);
+
+        setIsPaused(!isPaused);
+
+        if (isPaused) {
+            currentVideo.play();
+        } else {
+            currentVideo.pause();
+        }
     };
 
     return (
@@ -66,10 +81,22 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                     }
                 </div>
             </div>
+
+            <div className={s.pauseBtn} onClick={pauseVideo}>
+                <button>
+                    <PlayIcon isPause={isPaused} />
+                </button>
+            </div>
+
             {children}
+
             {
                 like &&
-                <div></div>
+                <div className={s.likeBtn}>
+                    <button>
+                        <LikeIcon liked={false}/>
+                    </button>
+                </div>
             }
 
             <div className={s.mutedBtn}>
@@ -78,24 +105,14 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                 </button>
             </div>
 
-            <div className={s.pauseBtn}>
-                <button>
-                    Пауза
-                </button>
-            </div>
-
             <div className={s.NextPrevBtns}>
-                <button onClick={prev}>Prev</button>
-                <button onClick={next}>Next</button>
-            </div>
-
-            {/* <div className={s.btns}>
-                <button onClick={prev}>Prev</button>
-                <button onClick={next}>Next</button>
-                <button onClick={muteVideo}>
-                    <VolumeIcon isMuted={isVideosMuted} />    
+                <button onClick={prev}>
+                    <ArrowUp />
                 </button>
-            </div> */}
+                <button onClick={next}>
+                    <ArrowDown />
+                </button>
+            </div>
         </div>
     )
 }

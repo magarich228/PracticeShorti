@@ -1,0 +1,7 @@
+.svg {
+    color: white;
+}
+
+.svg.liked {
+    color: indianred;
+}
