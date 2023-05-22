@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Shorti.Identity.Api.Data;
-using Shorti.Identity.Api.Identity.JwtPipeline;
 using Shorti.Shared.Contracts.Identity;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Abstractions;
+using Shorti.Shared.Kernel.Filters;
 
 namespace Shorti.Identity.Api.Controllers
 {
