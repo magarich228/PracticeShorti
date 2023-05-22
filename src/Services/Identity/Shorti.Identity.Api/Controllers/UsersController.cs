@@ -41,7 +41,7 @@ namespace Shorti.Identity.Api.Controllers
         [HttpPut("avatarUpdate")]
         public async Task<IActionResult> UpdateAvatar(IFormFile avatar)
         {
-            string path = Path.GetRandomFileName();
+            string path = $"avatars/{Path.GetRandomFileName()}";
 
             var user = (User)HttpContext.Items["User"]!;
 

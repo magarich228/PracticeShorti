@@ -21,8 +21,4 @@
     <ProjectReference Include="..\..\..\Shared\Shorti.Shared.Kernel\Shorti.Shared.Kernel.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\avatars\" />
-  </ItemGroup>
-
 </Project>

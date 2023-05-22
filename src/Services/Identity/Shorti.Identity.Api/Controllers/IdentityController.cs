@@ -73,7 +73,7 @@ namespace Shorti.Identity.Api.Controllers
                 Id = Guid.NewGuid(),
                 UserName = registerRequest.UserName,
                 PasswordHash = _hashService.HashPassword(registerRequest.Password),
-                AvatarPath = "default"
+                AvatarPath = "avatars/defaultuser.png"
             };
 
             _db.Users.Add(newUser);
