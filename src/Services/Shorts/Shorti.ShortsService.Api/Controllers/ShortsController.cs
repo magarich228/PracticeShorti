@@ -40,13 +40,13 @@ namespace Shorti.ShortsService.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload([FromBody] NewShortVideoDto shortVideoDto)
         {
-            string newFileName = Path.GetRandomFileName();
+            string path = Path.GetRandomFileName();
 
-            await _fileService.DownloadAsync(shortVideoDto.File, newFileName);
-            var result = System.IO.File.Exists(Path.Combine(_fileService.FilePath, newFileName));
+            await _fileService.DownloadAsync(shortVideoDto.File, path);
+            var result = System.IO.File.Exists(Path.Combine(_fileService.FilePath, path));
 
             var @short = Mapping.Map<NewShortVideoDto, ShortVideo>(shortVideoDto);
-            @short.FileName = newFileName;
+            @short.FileName = path;
 
             await _db.Shorts.AddAsync(@short);
             var rows = await _db.SaveChangesAsync();
