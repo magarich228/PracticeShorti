@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useRef, useState } from "react";
 import VolumeIcon from '../UI/VolumeIcon';
 import s from './VideoPlayer.module.css'
+import NavBar from '../NavBar/NavBar';
 
 export default function VideoPlayer({videos, curVideo, setCurVideo}) {
     const feedEl = useRef();
@@ -66,13 +67,13 @@ export default function VideoPlayer({videos, curVideo, setCurVideo}) {
                     }
                 </div>
             </div>
-            <div className={s.btns}>
+            {/* <div className={s.btns}>
                 <button onClick={prev}>Prev</button>
                 <button onClick={next}>Next</button>
                 <button onClick={muteVideo}>
                     <VolumeIcon isMuted={isVideosMuted} />    
                 </button>
-            </div>
+            </div> */}
         </div>
     )
 }

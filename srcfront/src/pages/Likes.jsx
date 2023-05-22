@@ -1,10 +1,10 @@
 import React from 'react'
 import NavBar from '../components/NavBar/NavBar'
 
-export default function VideoAdd() {
+export default function Likes() {
     return (
         <div>
-            <h1>VideoAdd</h1>
+            <h1>Likes</h1>
             <NavBar />
         </div>
     )

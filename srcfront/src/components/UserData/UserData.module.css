@@ -1,0 +1,24 @@
+.container {
+    padding: 15px 0;
+}
+
+.inner {
+    display: flex;
+}
+
+.avatar_box {
+    flex-basis: 20%;
+}
+
+.data {
+    flex-basis: 80%;
+    display: flex;
+}
+
+.text {
+    
+}
+
+.btn {
+
+}
