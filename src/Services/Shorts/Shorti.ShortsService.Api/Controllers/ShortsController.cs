@@ -40,18 +40,26 @@ namespace Shorti.ShortsService.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload([FromBody] NewShortVideoDto shortVideoDto)
         {
-            string path = Path.GetRandomFileName();
+            string fileName = $"{Guid.NewGuid()}{Path.GetExtension(shortVideoDto.File.FileName)}";
 
-            await _fileService.DownloadAsync(shortVideoDto.File, path);
-            var result = System.IO.File.Exists(Path.Combine(_fileService.FilePath, path));
+            await _fileService.DownloadAsync(shortVideoDto.File, fileName);
+            var isDownloaded = System.IO.File.Exists(Path.Combine(_fileService.FilePath, fileName));
 
             var @short = Mapping.Map<NewShortVideoDto, ShortVideo>(shortVideoDto);
-            @short.FileName = path;
+            @short.FileName = $"shorts/{fileName}";
 
             await _db.Shorts.AddAsync(@short);
             var rows = await _db.SaveChangesAsync();
 
-            return Ok($"File download sucsess: {result}\nRows added: {rows}");
+            if (rows == 0)
+            {
+                return Problem(detail: "Видео не добавлено в БД.");
+            }
+
+            return Ok(new
+            {
+                FileDownloadIsSuccess = isDownloaded
+            });
         }
     }
 }
