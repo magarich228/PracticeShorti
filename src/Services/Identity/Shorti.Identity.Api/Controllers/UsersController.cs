@@ -19,7 +19,7 @@ namespace Shorti.Identity.Api.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetById([FromRoute] string userId)
+        public async Task<IActionResult> GetById([FromRoute] Guid userId)
         {
             var user = await _db.Users.FindAsync(new object[] { userId });
 
