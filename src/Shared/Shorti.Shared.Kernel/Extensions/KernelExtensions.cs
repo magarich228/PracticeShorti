@@ -9,8 +9,14 @@ namespace Shorti.Shared.Kernel.KernelExtensions
     {
         public static IServiceCollection AddKernelServices(this IServiceCollection services, IConfiguration configuration)
         {
+            FileDownloaderSettings fileDownloaderSettings = new();
+            FileValidatorSettings fileValidatorSettings = new ();
+
             services.AddTransient<IFileDownloader, FileDownloader>(services => 
-                new FileDownloader(configuration));
+                new FileDownloader());
+
+            services.AddTransient<IFileValidator, FileValidator>(services => 
+                new FileValidator());
 
             services.AddTransient<IFileService, FileService>();
 

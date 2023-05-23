@@ -16,12 +16,9 @@ namespace Shorti.Shared.Kernel
             _filesPath = filesPath;
         }
 
-        public FileDownloader(IConfiguration configuration)
+        public FileDownloader(FileDownloaderSettings settings)
         {
-            var settings = configuration.GetRequiredSection(_fileDownloaderSettingsKey);
-            var path = settings["FilesPath"];
-
-            _filesPath = path;
+            _filesPath = settings.FilesPath;
         }
 
         public async Task Download(IFormFile file, string fileName)
