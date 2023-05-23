@@ -7,7 +7,6 @@ namespace Shorti.Shared.Contracts.Shorts
     {
         public Guid Id { get; set; }
 
-        [Required]
         public Guid AuthorId { get; set; }
 
         [Required]

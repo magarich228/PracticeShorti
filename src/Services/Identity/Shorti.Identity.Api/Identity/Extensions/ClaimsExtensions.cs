@@ -9,6 +9,6 @@ namespace Shorti.Identity.Api.Identity.Extensions
             Guid.Parse(claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
         public static string GetUsername(this IEnumerable<Claim> claims) =>
-            claims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
+            claims.First(c => c.Type == ClaimTypes.Name).Value;
     }
 }
