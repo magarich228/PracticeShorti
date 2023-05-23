@@ -9,8 +9,13 @@
           "Port": 5059
         }
       ],
+      "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Shorts/{shortId}",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Shorts",
@@ -21,8 +26,13 @@
           "Port": 5059
         }
       ],
+      "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Shorts",
-      "UpstreamHttpMethod": [ "POST" ]
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
     }
   ]
 }

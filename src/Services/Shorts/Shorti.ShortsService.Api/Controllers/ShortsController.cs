@@ -2,7 +2,6 @@
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Abstractions;
-using Shorti.Shared.Kernel.Filters;
 using Shorti.ShortsService.Api.Data;
 using Shorti.ShortsService.Api.Data.Models;
 
@@ -10,7 +9,6 @@ namespace Shorti.ShortsService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [JwtAuthorize]
     public class ShortsController : ControllerBase
     {
         private readonly IFileService _fileService;
@@ -23,7 +21,7 @@ namespace Shorti.ShortsService.Api.Controllers
         }
 
         [HttpGet("{shortId}")]
-        public async Task<IActionResult> GetShortById(Guid shortId)
+        public async Task<ActionResult<ShortVideoDto>> GetShortById(Guid shortId)
         {
             var @short = await _db.Shorts.FindAsync(new object[] { shortId });
             

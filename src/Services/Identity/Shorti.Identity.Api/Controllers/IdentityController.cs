@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shorti.Identity.Api.Data;
@@ -9,7 +6,6 @@ using Shorti.Identity.Api.Identity.Abstractions;
 using Shorti.Identity.Api.Identity.Extensions;
 using Shorti.Identity.Api.Services;
 using Shorti.Shared.Contracts.Identity;
-using Shorti.Shared.Kernel.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -36,9 +32,8 @@ namespace Shorti.Identity.Api.Controllers
             _hashService = hashService;
         }
 
-        [AllowAnonymous]
-        [HttpPost("login")]
-        public ActionResult<LoginResultDto> Login([FromBody] LoginDto loginRequest)
+        [HttpGet("signin")]
+        public ActionResult<LoginResultDto> SignIn([FromBody] LoginDto loginRequest)
         {
             var user = _db.Users.FirstOrDefault(u => u.UserName == loginRequest.UserName);
 
@@ -57,9 +52,8 @@ namespace Shorti.Identity.Api.Controllers
             return Login(user);
         }
 
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<ActionResult<LoginResultDto>> Register([FromBody] RegisterDto registerRequest)
+        [HttpPost("signup")]
+        public async Task<ActionResult<LoginResultDto>> SignUp([FromBody] RegisterDto registerRequest)
         {
             var isExist = _db.Users.FirstOrDefault(u => u.UserName == registerRequest.UserName) != null;
 
@@ -88,13 +82,15 @@ namespace Shorti.Identity.Api.Controllers
             return Login(newUser);
         }
 
-        [HttpPost("refresh-token")]
-        [JwtAuthorize]
-        public async Task<ActionResult<LoginResultDto>> RefreshToken([FromBody] RefreshTokenRequestDto request)
+        [HttpGet("refresh-token")]
+        public ActionResult<LoginResultDto> RefreshToken([FromBody] RefreshTokenRequestDto request)
         {
             try
             {
-                var accessToken = await HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.TokenName);
+                var accessToken = HttpContext.Request.Headers["Authorization"]
+                    .FirstOrDefault()?
+                    .Split(" ")
+                    .Last();
 
                 if (string.IsNullOrWhiteSpace(request.RefreshToken) || accessToken == null)
                 {
@@ -119,14 +115,16 @@ namespace Shorti.Identity.Api.Controllers
         }
 
         [HttpDelete("logout")]
-        [JwtAuthorize]
-        public async Task<ActionResult> Logout()
+        public ActionResult Logout()
         {
-            var token = await HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, IdentityConstants.TokenName);
+            var token = HttpContext.Request.Headers["Authorization"]
+                .FirstOrDefault()?
+                .Split(" ")
+                .Last();
 
             if (token == null)
             {
-                throw new ApplicationException("Отсутствует Bearer Authorization token.");
+                return Unauthorized();
             }
 
             var decode = _identityManager.DecodeJwtToken(token);
@@ -137,7 +135,6 @@ namespace Shorti.Identity.Api.Controllers
                 claims.GetUsername());
 
             HttpContext.Response.Headers.Remove(IdentityConstants.AuthorizationHeaderName);
-            await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
 
             return Ok();
         }
