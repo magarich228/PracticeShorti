@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Shorti.Identity.Api.Identity.Abstractions;
 using Shorti.Identity.Api.Identity.Extensions;
+using Shorti.Shared.Kernel.Identity;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;

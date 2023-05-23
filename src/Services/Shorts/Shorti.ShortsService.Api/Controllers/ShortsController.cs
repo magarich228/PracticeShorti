@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Abstractions;
@@ -10,7 +9,6 @@ namespace Shorti.ShortsService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ShortsController : ControllerBase
     {
         private readonly IFileService _fileService;
@@ -23,7 +21,7 @@ namespace Shorti.ShortsService.Api.Controllers
         }
 
         [HttpGet("{shortId}")]
-        public async Task<IActionResult> GetShortById(Guid shortId)
+        public async Task<ActionResult<ShortVideoDto>> GetShortById(Guid shortId)
         {
             var @short = await _db.Shorts.FindAsync(new object[] { shortId });
             
@@ -38,20 +36,45 @@ namespace Shorti.ShortsService.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload([FromBody] NewShortVideoDto shortVideoDto)
+        public async Task<IActionResult> Upload([FromForm] NewShortVideoDto shortVideoDto)
         {
-            string path = Path.GetRandomFileName();
+            var validationResult = await _fileService.ValidateFile(shortVideoDto.File);
 
-            await _fileService.DownloadAsync(shortVideoDto.File, path);
-            var result = System.IO.File.Exists(Path.Combine(_fileService.FilePath, path));
+            if (validationResult.Any())
+            {
+                foreach (var error in validationResult)
+                {
+                    ModelState.AddModelError(
+                        shortVideoDto.File.FileName, 
+                        error?.ErrorMessage ?? string.Empty);
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            string fileName = $"{Guid.NewGuid()}{Path.GetExtension(shortVideoDto.File.FileName)}";
+
+            await _fileService.DownloadAsync(shortVideoDto.File, fileName);
+            var isDownloaded = System.IO.File.Exists(Path.Combine(_fileService.FilePath, fileName));
 
             var @short = Mapping.Map<NewShortVideoDto, ShortVideo>(shortVideoDto);
-            @short.FileName = path;
+
+            @short.Id = Guid.NewGuid();
+            @short.FileName = $"shorts/{fileName}";
 
             await _db.Shorts.AddAsync(@short);
             var rows = await _db.SaveChangesAsync();
 
-            return Ok($"File download sucsess: {result}\nRows added: {rows}");
+            if (rows == 0)
+            {
+                return Problem(detail: "Видео не добавлено в БД.");
+            }
+
+            return Ok(new
+            {
+                VideoId = @short.Id,
+                FileDownloadIsSuccess = isDownloaded
+            });
         }
     }
 }
