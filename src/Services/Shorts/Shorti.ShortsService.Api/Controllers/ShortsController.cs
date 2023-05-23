@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Abstractions;
+using Shorti.Shared.Kernel.Filters;
 using Shorti.ShortsService.Api.Data;
 using Shorti.ShortsService.Api.Data.Models;
 
@@ -10,7 +11,7 @@ namespace Shorti.ShortsService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[JwtAuthorize]
     public class ShortsController : ControllerBase
     {
         private readonly IFileService _fileService;
@@ -38,7 +39,7 @@ namespace Shorti.ShortsService.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload([FromBody] NewShortVideoDto shortVideoDto)
+        public async Task<IActionResult> Upload([FromForm] NewShortVideoDto shortVideoDto)
         {
             var validationResult = await _fileService.ValidateFile(shortVideoDto.File);
 
