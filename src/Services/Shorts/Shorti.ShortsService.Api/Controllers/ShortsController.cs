@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Abstractions;
@@ -75,6 +74,7 @@ namespace Shorti.ShortsService.Api.Controllers
 
             return Ok(new
             {
+                VideoId = shortVideoDto.Id,
                 FileDownloadIsSuccess = isDownloaded
             });
         }
