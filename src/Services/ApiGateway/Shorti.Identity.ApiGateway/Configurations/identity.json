@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/Identity/login",
+      "DownstreamPathTemplate": "/api/Identity/signin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -9,11 +9,25 @@
           "Port": 5064
         }
       ],
-      "UpstreamPathTemplate": "/api/Identity/login",
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Identity/signin",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Identity/signup",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5064
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Identity/signup",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/Identity/register",
+      "DownstreamPathTemplate": "/api/Identity/refresh-token",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -21,8 +35,13 @@
           "Port": 5064
         }
       ],
-      "UpstreamPathTemplate": "/api/Identity/register",
-      "UpstreamHttpMethod": [ "POST" ]
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Identity/refresh-token",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Identity/logout",
@@ -33,8 +52,13 @@
           "Port": 5064
         }
       ],
+      "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Identity/logout",
-      "UpstreamHttpMethod": [ "DELETE" ]
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Users/{userId}",
@@ -45,8 +69,64 @@
           "Port": 5064
         }
       ],
+      "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Users/{userId}",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Users/avatarUpdate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5064
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Users/avatarUpdate",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Users/current",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5064
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Users/current",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/avatars/{file}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5064
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/avatars/{file}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
     }
   ]
 }
