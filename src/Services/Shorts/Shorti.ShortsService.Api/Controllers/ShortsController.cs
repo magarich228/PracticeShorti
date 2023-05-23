@@ -10,7 +10,7 @@ namespace Shorti.ShortsService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[JwtAuthorize]
+    [JwtAuthorize]
     public class ShortsController : ControllerBase
     {
         private readonly IFileService _fileService;
@@ -74,7 +74,7 @@ namespace Shorti.ShortsService.Api.Controllers
 
             return Ok(new
             {
-                VideoId = shortVideoDto.Id,
+                VideoId = @short.Id,
                 FileDownloadIsSuccess = isDownloaded
             });
         }
