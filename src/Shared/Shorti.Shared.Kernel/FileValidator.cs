@@ -28,7 +28,7 @@ namespace Shorti.Shared.Kernel
                 return errors;
             }
 
-            if (_validFileTypes.Contains(Path.GetExtension(file!.FileName)))
+            if (_validFileTypes.Contains(Path.GetExtension(file!.FileName).ToLower()))
             {
                 errors.Add(new ValidationResult("Файл имеет недопустимый тип."));
             }

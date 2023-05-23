@@ -40,6 +40,20 @@ namespace Shorti.ShortsService.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload([FromBody] NewShortVideoDto shortVideoDto)
         {
+            var validationResult = await _fileService.ValidateFile(shortVideoDto.File);
+
+            if (validationResult.Any())
+            {
+                foreach (var error in validationResult)
+                {
+                    ModelState.AddModelError(
+                        shortVideoDto.File.FileName, 
+                        error?.ErrorMessage ?? string.Empty);
+                }
+
+                return BadRequest(ModelState);
+            }
+
             string fileName = $"{Guid.NewGuid()}{Path.GetExtension(shortVideoDto.File.FileName)}";
 
             await _fileService.DownloadAsync(shortVideoDto.File, fileName);

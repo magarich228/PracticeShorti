@@ -12,11 +12,14 @@ namespace Shorti.Shared.Kernel.KernelExtensions
             FileDownloaderSettings fileDownloaderSettings = new();
             FileValidatorSettings fileValidatorSettings = new ();
 
+            configuration.Bind(fileDownloaderSettings);
+            configuration.Bind(fileValidatorSettings);
+
             services.AddTransient<IFileDownloader, FileDownloader>(services => 
-                new FileDownloader());
+                new FileDownloader(fileDownloaderSettings));
 
             services.AddTransient<IFileValidator, FileValidator>(services => 
-                new FileValidator());
+                new FileValidator(fileValidatorSettings));
 
             services.AddTransient<IFileService, FileService>();
 

@@ -7,6 +7,6 @@ namespace Shorti.Shared.Kernel.Abstractions
     {
         string FilePath { get; }
         Task DownloadAsync(IFormFile file, string fileName);
-        Task<ValidationResult> ValidateFile(IFormFile file);
+        Task<IEnumerable<ValidationResult>> ValidateFile(IFormFile file);
     }
 }
