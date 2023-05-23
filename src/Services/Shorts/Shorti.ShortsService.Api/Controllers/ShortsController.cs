@@ -46,6 +46,8 @@ namespace Shorti.ShortsService.Api.Controllers
             var isDownloaded = System.IO.File.Exists(Path.Combine(_fileService.FilePath, fileName));
 
             var @short = Mapping.Map<NewShortVideoDto, ShortVideo>(shortVideoDto);
+
+            @short.Id = Guid.NewGuid();
             @short.FileName = $"shorts/{fileName}";
 
             await _db.Shorts.AddAsync(@short);
