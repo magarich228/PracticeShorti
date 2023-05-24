@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shorti.Shared.Contracts.Identity;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Abstractions;
 using Shorti.ShortsService.Api.Data;
 using Shorti.ShortsService.Api.Data.Models;
+using System.Net.Http.Headers;
 
 namespace Shorti.ShortsService.Api.Controllers
 {
@@ -13,11 +15,16 @@ namespace Shorti.ShortsService.Api.Controllers
     {
         private readonly IFileService _fileService;
         private readonly ShortsContext _db;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ShortsController(IFileService fileService, ShortsContext db)
+        public ShortsController(
+            IFileService fileService, 
+            ShortsContext db,
+            IHttpClientFactory httpClientFactory)
         {
             _fileService = fileService;
             _db = db;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpGet("{shortId}")]
@@ -59,7 +66,18 @@ namespace Shorti.ShortsService.Api.Controllers
 
             var @short = Mapping.Map<NewShortVideoDto, ShortVideo>(shortVideoDto);
 
+            var identityClient = _httpClientFactory.CreateClient("IdentityClient");
+
+            var token = HttpContext.Request.Headers["Authorization"]
+                    .FirstOrDefault()?
+                    .Split(" ")
+                    .Last();
+            identityClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var authorId = (await identityClient.GetFromJsonAsync<UserDto>("api/Users/current"))!.Id;
+
             @short.Id = Guid.NewGuid();
+            @short.AuthorId = authorId;
             @short.FileName = $"shorts/{fileName}";
 
             await _db.Shorts.AddAsync(@short);

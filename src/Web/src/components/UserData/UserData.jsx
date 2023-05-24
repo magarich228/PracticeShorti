@@ -1,7 +1,7 @@
 import React from 'react'
 import s from './UserData.module.css'
 
-export default function UserData({children}) {
+export default function UserData({children, subscribeBtn}) {
   return (
     <div className={s.container}>
         <div className={s.inner}>
@@ -18,7 +18,9 @@ export default function UserData({children}) {
                     </div>
                 </div>
                 <div className={s.btn}>
-                    <button>Подписаться</button>
+                    { subscribeBtn && 
+                        <button>Подписаться</button>
+                    }
                 </div>
             </div>
         </div>

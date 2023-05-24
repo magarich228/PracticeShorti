@@ -7,7 +7,6 @@ namespace Shorti.Shared.Kernel
     public class FileDownloader : IFileDownloader
     {
         private string _filesPath;
-        private string _fileDownloaderSettingsKey = "FileDownloader";
 
         public string FilesPath => _filesPath;
 
@@ -25,7 +24,7 @@ namespace Shorti.Shared.Kernel
         {
             ArgumentNullException.ThrowIfNull(file, nameof(file));
 
-            using var newFile = File.Create(Path.Combine(_filesPath, fileName));
+            using var newFile = File.Create(Path.Combine(FilesPath, fileName));
             using var read = file.OpenReadStream();
 
             await read.CopyToAsync(newFile);

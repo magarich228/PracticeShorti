@@ -5,7 +5,7 @@ import UserData from '../UserData/UserData'
 export default function VideoData({curVideo}) {
   return (
     <div className={s.container}>
-        <UserData>
+        <UserData subscribeBtn={true}>
             <span>Дата</span>
         </UserData>
         <div className={s.desc}>
