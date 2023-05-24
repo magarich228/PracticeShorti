@@ -1,0 +1,11 @@
+.ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+.li svg {
+    color: white;
+}
+

@@ -1,0 +1,20 @@
+.svg {
+    color: white;
+    height: 50px;
+    width: 50px;
+}
+
+.pause {
+    color: transparent;
+    transition: all 1.5s;
+    animation: disappearance 1.5s ease-in-out;
+}
+
+@keyframes disappearance {
+    from {
+        color: white;
+    }
+    to {
+        color: transparent
+    }
+}

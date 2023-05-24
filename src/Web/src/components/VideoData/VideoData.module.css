@@ -1,0 +1,33 @@
+.container {
+    padding: 0 20px;
+}
+
+.desc {
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.descText {
+    margin: 5px;
+}
+
+.descText h3 {
+    margin-bottom: 5px;
+}
+
+.descText p {
+    text-indent: 10px;
+}
+
+.tags {
+    display: flex;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    margin-left: 5px;
+}
+
+.tag {
+    list-style: none;
+}

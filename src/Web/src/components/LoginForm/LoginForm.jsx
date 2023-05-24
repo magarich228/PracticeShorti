@@ -6,6 +6,8 @@ export default function LoginForm() {
     const {setIsAuth} = useContext(AuthContext);
     const [curForm, setCurForm] = useState("auth");
 
+    // вынести в Login.jsx логику авторизации, оставить здесь только форму
+
     function onChange(e) {
         setCurForm(e.target.value);
     }
@@ -13,6 +15,8 @@ export default function LoginForm() {
     function submit(e) {
         e.preventDefault();
         setIsAuth(true);
+
+        localStorage.setItem("auth", true);
     } 
 
     return (

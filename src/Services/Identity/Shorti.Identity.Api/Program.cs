@@ -61,6 +61,8 @@ builder.Services.AddSwaggerGen(swagger =>
     });
 });
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -68,6 +70,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(c => c.AllowAnyOrigin());
 
 app.UseStaticFiles();
 

@@ -40,7 +40,11 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddOcelot(builder.Configuration);
 
+builder.Services.AddCors();
+
 var app = builder.Build();
+
+app.UseCors(c => c.AllowAnyOrigin());
 
 app.UseAuthentication();
 app.UseAuthorization();
