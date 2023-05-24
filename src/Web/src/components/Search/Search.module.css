@@ -1,0 +1,38 @@
+.container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 300px;
+    width: 620px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchInput {
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 8px;
+    color: white;
+    height: 30px;
+    padding-left: 8px;
+}
+
+.searchInput:focus {
+    outline: none;
+}
+
+input::-webkit-input-placeholder {
+    color: white;
+}
+
+.container:hover .searchInput {
+    visibility: visible;
+    opacity: 1;
+}

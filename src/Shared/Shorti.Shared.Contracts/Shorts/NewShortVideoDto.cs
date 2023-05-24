@@ -5,10 +5,6 @@ namespace Shorti.Shared.Contracts.Shorts
 {
     public class NewShortVideoDto
     {
-        public Guid Id { get; set; }
-
-        public Guid AuthorId { get; set; }
-
         [Required]
         [StringLength(100)]
         public string Title { get; set; } = null!;
