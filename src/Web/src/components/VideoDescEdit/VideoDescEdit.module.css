@@ -1,0 +1,74 @@
+.container {
+    padding: 0 20px;
+}
+
+.desc {
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.form {
+
+}
+
+.name input, .name, .descText, .descText textarea, .taginput, .taginput input, .taginput button {
+    display: block;
+}
+
+.name {
+
+}
+
+.name input {
+    margin-top: 5px;
+}
+
+.descText {
+
+}
+
+.descText textarea {
+    resize: none;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.taginput {
+    margin-top: 10px;
+}
+
+.taginput input {
+    margin-top: 5px;
+}
+
+.taginput button {
+    margin-top: 5px;
+}
+
+.tags {
+    display: flex;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
+.tag {
+    list-style: none;
+}
+
+.file {
+    margin-top: 10px;
+}
+
+.sbmt {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 30px;
+    width: 120px;
+}

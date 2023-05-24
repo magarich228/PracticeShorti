@@ -30,6 +30,7 @@
 
 .video_wrapper {
     position: relative;
+    min-height: 100vh;
 }
 
 .pauseBtn {
@@ -86,4 +87,11 @@
 
 .likeBtn button, .mutedBtn button, .pauseBtn button, .NextPrevBtns button {
     cursor: pointer;
+}
+
+.h3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
 }

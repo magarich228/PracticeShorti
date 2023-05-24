@@ -14,6 +14,8 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
     const [isPaused, setIsPaused] = useState(false);
   
     useEffect(() => {
+        if (!videos.length) return;
+
         const video = document.querySelector("." + s.video+curVideo);
         const h = document.querySelector("." + s.video_block).clientHeight;
 
@@ -30,6 +32,18 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
         feedEl.current.style.transform = `translateY(-${h * curVideo}px)`;
 
     }, [curVideo, isVideosMuted, isPaused]);
+
+    if (!videos.length) {
+        return (
+            <div className={s.video_wrapper}>
+                <div className={s.videos_container}>
+                    <div className={s.feed} ref={feedEl}>
+                        <h3 className={s.h3}>Пусто</h3>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     function next() {
         if (curVideo < videos.length - 1) {

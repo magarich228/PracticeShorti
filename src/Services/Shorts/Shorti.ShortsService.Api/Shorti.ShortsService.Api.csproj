@@ -31,5 +31,4 @@
   <ItemGroup>
     <Folder Include="wwwroot\shorts\" />
   </ItemGroup>
-
 </Project>
