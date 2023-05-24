@@ -2,7 +2,7 @@
 {
     public class UserDto
     {
-        public string Id { get; set; } = null!;
+        public Guid Id { get; set; }
         public string UserName { get; set; } = null!;
         public string AvatarPath { get; set; } = null!;
     }
