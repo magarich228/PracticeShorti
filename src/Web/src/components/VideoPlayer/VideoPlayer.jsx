@@ -12,7 +12,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
     const isFirstVid = useRef(true);
     const [isVideosMuted, setIsVideosMuted] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
-
+  
     useEffect(() => {
         const video = document.querySelector("." + s.video+curVideo);
         const h = document.querySelector("." + s.video_block).clientHeight;

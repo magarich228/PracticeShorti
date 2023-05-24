@@ -1,0 +1,55 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Shorts/{shortId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5059
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Shorts/{shortId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Shorts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5059
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Shorts",
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/shorts/{file}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5059
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/shorts/{file}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    }
+  ]
+}

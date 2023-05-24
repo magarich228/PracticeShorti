@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Shorti.Identity.Api.Data;
+using Shorti.Identity.Api.Identity;
+using Shorti.Identity.Api.Identity.Abstractions;
+using Shorti.Identity.Api.Identity.Extensions;
+using Shorti.Identity.Api.Services;
 using Shorti.Shared.Contracts.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Shorti.Identity.Api.Controllers
 {
@@ -9,101 +15,149 @@ namespace Shorti.Identity.Api.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-        private readonly IUserStore<User> _userStore;
+        private readonly IJwtIdentityManager _identityManager;
+        private readonly ILogger<IdentityController> _logger;
+        private readonly ShortiIdentityContext _db;
+        private readonly HashService _hashService;
 
         public IdentityController(
-            SignInManager<User> signInManager,
-            UserManager<User> userManager,
-            IUserStore<User> userStore)
+            IJwtIdentityManager identityManager,
+            ILogger<IdentityController> logger,
+            ShortiIdentityContext db,
+            HashService hashService)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _userStore = userStore;
+            _identityManager = identityManager;
+            _logger = logger;
+            _db = db;
+            _hashService = hashService;
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        [HttpGet("signin")]
+        public ActionResult<LoginResultDto> SignIn([FromBody] LoginDto loginRequest)
         {
-            if (ModelState.IsValid)
+            var user = _db.Users.FirstOrDefault(u => u.UserName == loginRequest.UserName);
+
+            if (user == null)
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    loginDto.UserName,
-                    loginDto.Password,
-                    loginDto.RememberMe,
-                    lockoutOnFailure: false);
-
-                if (result.Succeeded)
-                {
-                    var user = await _userManager.FindByNameAsync(loginDto.UserName);
-                    var userId = await _userManager.GetUserIdAsync(user);
-
-                    return Ok(userId);
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-
-                    return BadRequest(ModelState);
-                }
+                return Unauthorized(loginRequest);
             }
 
-            return BadRequest(ModelState);
-        }
+            var result = _hashService.VerifyHashedPassword(user.PasswordHash, loginRequest.Password);
 
-        [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
-        {
-            if (ModelState.IsValid)
+            if (!result)
             {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, registerDto.UserName, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-                if (result.Succeeded)
-                {
-                    var userId = await _userManager.GetUserIdAsync(user);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    return Ok(userId);
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                return Unauthorized(loginRequest);
             }
 
-            return BadRequest(ModelState);
+            return Login(user);
         }
 
-        [HttpPost]
-        [Route("logout")]
-        public async Task<IActionResult> LogOut()
+        [HttpPost("signup")]
+        public async Task<ActionResult<LoginResultDto>> SignUp([FromBody] RegisterDto registerRequest)
         {
-            await _signInManager.SignOutAsync();
+            var isExist = _db.Users.FirstOrDefault(u => u.UserName == registerRequest.UserName) != null;
+
+            if (isExist)
+            {
+                ModelState.AddModelError("username", "Такой UserName занят.");
+                return BadRequest(ModelState);
+            }
+
+            User newUser = new User
+            {
+                Id = Guid.NewGuid(),
+                UserName = registerRequest.UserName,
+                PasswordHash = _hashService.HashPassword(registerRequest.Password),
+                AvatarPath = "avatars/defaultuser.png"
+            };
+
+            _db.Users.Add(newUser);
+            var rows = await _db.SaveChangesAsync();
+
+            if (rows == 0)
+            {
+                return Problem(detail: "Ошибка при добавлении нового пользователя.");
+            }
+
+            return Login(newUser);
+        }
+
+        [HttpGet("refresh-token")]
+        public ActionResult<LoginResultDto> RefreshToken([FromBody] RefreshTokenRequestDto request)
+        {
+            try
+            {
+                var accessToken = HttpContext.Request.Headers["Authorization"]
+                    .FirstOrDefault()?
+                    .Split(" ")
+                    .Last();
+
+                if (string.IsNullOrWhiteSpace(request.RefreshToken) || accessToken == null)
+                {
+                    return Unauthorized();
+                }
+
+                var claims = _identityManager.DecodeJwtToken(accessToken).claims.Claims;
+                var jwtResult = _identityManager.Refresh(request.RefreshToken, accessToken, DateTime.Now);
+
+                return Ok(new LoginResultDto
+                {
+                    Id = claims.GetId(),
+                    UserName = claims.GetUsername(),
+                    AccessToken = jwtResult.AccessToken,
+                    RefreshToken = jwtResult.RefreshToken.TokenString
+                });
+            }
+            catch (SecurityTokenException e)
+            {
+                return Unauthorized(e.Message);
+            }
+        }
+
+        [HttpDelete("logout")]
+        public ActionResult Logout()
+        {
+            var token = HttpContext.Request.Headers["Authorization"]
+                .FirstOrDefault()?
+                .Split(" ")
+                .Last();
+
+            if (token == null)
+            {
+                return Unauthorized();
+            }
+
+            var decode = _identityManager.DecodeJwtToken(token);
+            var claims = decode.claims.Claims;
+
+            _identityManager.RemoveRefreshTokenByUser(
+                claims.GetId(),
+                claims.GetUsername());
+
+            HttpContext.Response.Headers.Remove(IdentityConstants.AuthorizationHeaderName);
 
             return Ok();
         }
 
         [NonAction]
-        private User CreateUser()
+        private ActionResult<LoginResultDto> Login(User user)
         {
-            try
+            var claims = new Claim[]
             {
-                return Activator.CreateInstance<User>();
-            }
-            catch
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
+
+            var jwtResult = _identityManager.GenerateTokens(user.Id, user.UserName, claims, DateTime.Now);
+
+            return Ok(new LoginResultDto
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
-                    $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
+                Id = user.Id,
+                UserName = user.UserName,
+                AccessToken = jwtResult.AccessToken,
+                RefreshToken = jwtResult.RefreshToken.TokenString
+            });
         }
     }
 }
