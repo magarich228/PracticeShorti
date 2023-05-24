@@ -6,6 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("ShortsContext");
 
+builder.Services.AddHttpClient("IdentityClient", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5171/");
+});
+
 builder.Services.AddDbContext<ShortsContext>(options =>
 {
     options.UseSqlServer(connectionString);
