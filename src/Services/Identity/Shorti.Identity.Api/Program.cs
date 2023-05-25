@@ -71,7 +71,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(c => c.AllowAnyOrigin());
+app.UseCors(c =>
+{
+    c.AllowAnyOrigin();
+    c.AllowAnyHeader();
+    c.AllowAnyMethod();
+});
 
 app.UseStaticFiles();
 
