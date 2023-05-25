@@ -83,7 +83,7 @@ namespace Shorti.Identity.Api.Controllers
             return Login(newUser);
         }
 
-        [HttpGet("refresh-token")]
+        [HttpPost("refresh-token")]
         public ActionResult<LoginResultDto> RefreshToken([FromBody] RefreshTokenRequestDto request)
         {
             try
