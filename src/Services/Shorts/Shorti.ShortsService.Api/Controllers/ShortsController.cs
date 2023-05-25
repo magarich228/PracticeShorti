@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using Shorti.Shared.Contracts.Identity;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
@@ -61,6 +62,28 @@ namespace Shorti.ShortsService.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetPage([FromQuery] int page, [FromQuery] int count)
+        {
+            ValidatePaginationQueryParams(page, count);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var allShortsCount = await _db.Shorts.CountAsync();
+            HttpContext.Response.Headers.Add(new KeyValuePair<string, StringValues>("Count", allShortsCount.ToString()));
+
+            var query =  _db.Shorts.Skip((page - 1) * count).Take(count);
+
+            var shorts = await query.ToListAsync();
+
+            return shorts.Any() ? 
+                Ok(shorts) :
+                NoContent();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Upload([FromForm] NewShortVideoDto shortVideoDto)
         {
@@ -112,6 +135,20 @@ namespace Shorti.ShortsService.Api.Controllers
                 VideoId = @short.Id,
                 FileDownloadIsSuccess = isDownloaded
             });
+        }
+
+        [NonAction]
+        private void ValidatePaginationQueryParams(int page, int count)
+        {
+            if (page <= 0)
+            {
+                ModelState.AddModelError("page", "Номер страниц контента начинается с 1.");
+            }
+
+            if (count <= 0)
+            {
+                ModelState.AddModelError("count", "Количества элементов на странице должно быть больше нуля.");
+            }
         }
     }
 }
