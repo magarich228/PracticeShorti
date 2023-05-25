@@ -11,7 +11,7 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Identity/signin",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "POST" ]
     },
     {
       "DownstreamPathTemplate": "/api/Identity/signup",
@@ -37,7 +37,7 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Identity/refresh-token",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ShortiIdentity",
         "AllowedScopes": []
