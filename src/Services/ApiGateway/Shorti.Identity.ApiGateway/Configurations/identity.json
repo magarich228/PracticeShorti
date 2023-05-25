@@ -37,7 +37,7 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Identity/refresh-token",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ShortiIdentity",
         "AllowedScopes": []
