@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shorti.Shared.Contracts.Identity;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
@@ -28,7 +29,7 @@ namespace Shorti.ShortsService.Api.Controllers
         }
 
         [HttpGet("{shortId}")]
-        public async Task<ActionResult<ShortVideoDto>> GetShortById(Guid shortId)
+        public async Task<ActionResult<ShortVideoDto>> GetShortById([FromRoute] Guid shortId)
         {
             var @short = await _db.Shorts.FindAsync(new object[] { shortId });
             
@@ -39,6 +40,24 @@ namespace Shorti.ShortsService.Api.Controllers
 
             var result = Mapping.Map<ShortVideo, ShortVideoDto>(@short);
             
+            return Ok(result);
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<ShortVideoDto>>> Search([FromQuery] string[] words)
+        {
+            var shorts = await _db.Shorts.ToArrayAsync();
+                
+            var result = shorts.Select(s => new
+            {
+                Short = s,
+                MatchesCount = words.Count(w => s.Title.Contains(w)) + 
+                ((s.Description != null) ? words.Count(w => s.Description!.Contains(w)) : 0)
+            })
+                .Where(s => s.MatchesCount > 0)
+                .OrderBy(s => s.MatchesCount)
+                .Select(s => Mapping.Map<ShortVideo, ShortVideoDto>(s.Short));
+
             return Ok(result);
         }
 
