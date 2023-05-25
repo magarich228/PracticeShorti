@@ -4,7 +4,8 @@ using Shorti.ShortsService.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("ShortsContext");
+var connectionString = builder.Configuration.GetConnectionString("ShortsContext") ??
+    throw new InvalidOperationException("Connection string 'ShortsContext' not found."); ;
 
 builder.Services.AddHttpClient("IdentityClient", client =>
 {

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Shorti.Identity.Api.Data.Models;
 
 namespace Shorti.Identity.Api.Data;
 
