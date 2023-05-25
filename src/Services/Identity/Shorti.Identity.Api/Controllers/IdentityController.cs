@@ -33,7 +33,7 @@ namespace Shorti.Identity.Api.Controllers
             _hashService = hashService;
         }
 
-        [HttpGet("signin")]
+        [HttpPost("signin")]
         public ActionResult<LoginResultDto> SignIn([FromBody] LoginDto loginRequest)
         {
             var user = _db.Users.FirstOrDefault(u => u.UserName == loginRequest.UserName);
