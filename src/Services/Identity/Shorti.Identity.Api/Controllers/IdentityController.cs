@@ -33,7 +33,7 @@ namespace Shorti.Identity.Api.Controllers
             _hashService = hashService;
         }
 
-        [HttpGet("signin")]
+        [HttpPost("signin")]
         public ActionResult<LoginResultDto> SignIn([FromBody] LoginDto loginRequest)
         {
             var user = _db.Users.FirstOrDefault(u => u.UserName == loginRequest.UserName);
@@ -83,7 +83,7 @@ namespace Shorti.Identity.Api.Controllers
             return Login(newUser);
         }
 
-        [HttpGet("refresh-token")]
+        [HttpPost("refresh-token")]
         public ActionResult<LoginResultDto> RefreshToken([FromBody] RefreshTokenRequestDto request)
         {
             try
