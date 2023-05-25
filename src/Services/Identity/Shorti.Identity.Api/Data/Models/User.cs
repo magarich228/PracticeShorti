@@ -1,4 +1,4 @@
-﻿namespace Shorti.Identity.Api.Data;
+﻿namespace Shorti.Identity.Api.Data.Models;
 
 public class User
 {
