@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shorti.Identity.Api.Data;
+using Shorti.Identity.Api.Data.Models;
 using Shorti.Identity.Api.Identity;
 using Shorti.Identity.Api.Identity.Abstractions;
 using Shorti.Identity.Api.Identity.Extensions;
