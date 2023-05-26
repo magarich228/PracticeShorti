@@ -4,6 +4,7 @@ using Shorti.Activities.Api.Data;
 using Shorti.Activities.Api.Data.Models;
 using Shorti.Shared.Contracts.Activities;
 using Shorti.Shared.Contracts.Services;
+using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Extensions;
 
@@ -146,6 +147,61 @@ namespace Shorti.Activities.Api.Controllers
             var rows = await _db.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpGet("likedShorts/{userId}")]
+        public async Task<ActionResult<IEnumerable<ShortVideoDto>>> GetUserLikedShorts([FromRoute] Guid userId)
+        {
+            var user = await _identityServiceClient.GetUserById(userId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("userId", $"Пользователь с Id: {userId} не найден.");
+
+                return BadRequest(ModelState);
+            }
+
+            var shortsQuery = _db.Likes.Where(l => l.UserId == userId);
+
+            List<ShortVideoDto> shorts = new();
+
+            foreach (var like in shortsQuery)
+            {
+                var @short = await _shortsServiceClient.GetShortByIdAsync(like.ShortId);
+
+                if (@short != null)
+                {
+                    shorts.Add(@short);
+                }
+            }
+
+            return shorts;
+        }
+
+        [HttpGet("subscriptionVideo/{userId}")]
+        public async Task<ActionResult<IEnumerable<ShortVideoDto>>> GetUserSubscriptionShorts([FromRoute] Guid userId)
+        {
+            var user = await _identityServiceClient.GetUserById(userId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("userId", $"Пользователь с Id: {userId} не найден.");
+
+                return BadRequest(ModelState);
+            }
+
+            var subsIds = _db.Subscriptions.Where(s => s.SubscriberId == userId);
+
+            List<ShortVideoDto> shorts = new();
+            
+            foreach (var subId in subsIds)
+            {
+                var userShorts = await _shortsServiceClient.GetUserShorts(subId.SubscriptionId);
+
+                shorts.AddRange(userShorts);
+            }
+
+            return shorts;
         }
     }
 }

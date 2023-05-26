@@ -23,5 +23,15 @@ namespace Shorti.Shared.Contracts.Services
             return @short;
         }
 
+        public async Task<IEnumerable<ShortVideoDto>> GetUserShorts(Guid userId)
+        {
+            var response = await _shortsServiceClient.GetAsync($"api/shorts/user/{userId}");
+
+            IEnumerable<ShortVideoDto> shorts = response.IsSuccessStatusCode ?
+                (await response.Content.ReadFromJsonAsync<IEnumerable<ShortVideoDto>>())!:
+                new List<ShortVideoDto>();
+
+            return shorts;
+        }
     }
 }
