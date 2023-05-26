@@ -7,6 +7,7 @@ using Shorti.Shared.Contracts.Services;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Extensions;
+using System.Diagnostics.Contracts;
 
 namespace Shorti.Activities.Api.Controllers
 {
@@ -149,7 +150,7 @@ namespace Shorti.Activities.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("likedShorts/{userId}")]
+        [HttpGet("liked-shorts/{userId}")]
         public async Task<ActionResult<IEnumerable<ShortVideoDto>>> GetUserLikedShorts([FromRoute] Guid userId)
         {
             var user = await _identityServiceClient.GetUserById(userId);
@@ -178,7 +179,7 @@ namespace Shorti.Activities.Api.Controllers
             return shorts;
         }
 
-        [HttpGet("subscriptionVideo/{userId}")]
+        [HttpGet("subscription-shorts/{userId}")]
         public async Task<ActionResult<IEnumerable<ShortVideoDto>>> GetUserSubscriptionShorts([FromRoute] Guid userId)
         {
             var user = await _identityServiceClient.GetUserById(userId);
@@ -202,6 +203,22 @@ namespace Shorti.Activities.Api.Controllers
             }
 
             return shorts;
+        }
+
+        [HttpGet("count-likes/{shortId}")]
+        public async Task<ActionResult<int>> CountLikes([FromRoute] Guid shortId)
+        {
+            var query = _db.Likes.Where(l => l.ShortId == shortId);
+
+            return Ok(await query.CountAsync());
+        }
+
+        [HttpGet("count-subscribers/{userId}")]
+        public async Task<ActionResult<int>> CountSubscribers([FromRoute] Guid userId)
+        {
+            var query = _db.Subscriptions.Where(s => s.SubscriptionId == userId);
+
+            return Ok(await query.CountAsync());
         }
     }
 }
