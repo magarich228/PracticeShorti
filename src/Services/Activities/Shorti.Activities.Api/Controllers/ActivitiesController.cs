@@ -179,7 +179,7 @@ namespace Shorti.Activities.Api.Controllers
             return shorts;
         }
 
-        [HttpGet("subscription-video/{userId}")]
+        [HttpGet("subscription-shorts/{userId}")]
         public async Task<ActionResult<IEnumerable<ShortVideoDto>>> GetUserSubscriptionShorts([FromRoute] Guid userId)
         {
             var user = await _identityServiceClient.GetUserById(userId);
