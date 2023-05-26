@@ -130,6 +130,7 @@
         "AllowedScopes": []
       }
     },
+    //Shorts
     {
       "DownstreamPathTemplate": "/api/Shorts/{shortId}",
       "DownstreamScheme": "http",
@@ -232,6 +233,7 @@
         "AllowedScopes": []
       }
     },
+    //Activities
     {
       "DownstreamPathTemplate": "/api/Activities/like/{shortId}",
       "DownstreamScheme": "http",
