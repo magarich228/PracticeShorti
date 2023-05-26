@@ -42,7 +42,7 @@ namespace Shorti.Identity.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut("avatarUpdate")]
+        [HttpPut("avatar-update")]
         public async Task<IActionResult> UpdateAvatar(IFormFile avatar)
         {
             var accessToken = HttpContext.Request.Headers["Authorization"]
