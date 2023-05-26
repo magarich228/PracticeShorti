@@ -1,6 +1,6 @@
 export default class LoginService {
     static async signup(authData) {
-        const res = await fetch("http://localhost:5064/api/Identity/signup", {
+        const res = await fetch("http://localhost:5171/api/Identity/signup", {
             method: "POST",
             mode: "cors",
             headers: {
@@ -13,7 +13,7 @@ export default class LoginService {
     }
 
     static async signin(authData) {
-        const res = await fetch("http://localhost:5064/api/Identity/signin", {
+        const res = await fetch("http://localhost:5171/api/Identity/signin", {
             method: "POST",
             mode: "cors",
             headers: {
@@ -30,7 +30,7 @@ export default class LoginService {
             method: "DELETE",
             mode: "cors",
             headers: {
-                "Authorization": accessToken
+                "Authorization": 'Bearer ' + accessToken
             }
         });
 
@@ -38,11 +38,11 @@ export default class LoginService {
     }
 
     static async refreshToken(refreshToken, accessToken) {
-        const res = await fetch("http://localhost:5064/api/Identity/refresh-token", {
+        const res = await fetch("http://localhost:5171/api/Identity/refresh-token", {
             method: "POST",
             mode: "cors",
             headers: {
-                "Authorization": accessToken,
+                "Authorization": 'Bearer ' + accessToken,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({refreshToken})

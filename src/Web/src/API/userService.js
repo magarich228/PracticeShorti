@@ -4,7 +4,7 @@ export default class UserService {
             method: "GET",
             mode: "cors",
             headers: {
-                "Authorization": accessToken
+                "Authorization": 'Bearer ' + accessToken
             }
         });
 
