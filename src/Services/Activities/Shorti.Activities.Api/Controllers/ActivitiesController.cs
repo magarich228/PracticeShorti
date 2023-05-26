@@ -91,7 +91,6 @@ namespace Shorti.Activities.Api.Controllers
         [HttpPost("subscribe/{userId}")]
         public async Task<ActionResult<SubscriptionDto>> SubscribeOnUser([FromRoute] Guid userId)
         {
-            //Решить баг с Not Found
             var user = await _identityServiceClient.GetUserById(userId);
 
             if (user == null)

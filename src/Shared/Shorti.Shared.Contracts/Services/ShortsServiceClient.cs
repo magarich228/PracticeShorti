@@ -9,7 +9,7 @@ namespace Shorti.Shared.Contracts.Services
 
         public ShortsServiceClient(IHttpClientFactory httpClientFactory)
         {
-            _shortsServiceClient = httpClientFactory.CreateClient("ShortsHost");
+            _shortsServiceClient = httpClientFactory.CreateClient("ApiGwHost");
         }
 
         public async Task<ShortVideoDto?> GetShortByIdAsync(Guid shortId)
