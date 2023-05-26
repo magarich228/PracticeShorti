@@ -86,5 +86,66 @@ namespace Shorti.Activities.Api.Controllers
 
             return Ok();
         }
+
+        [HttpPost("subscribe/{userId}")]
+        public async Task<ActionResult<SubscriptionDto>> SubscribeOnUser([FromRoute] Guid userId)
+        {
+            //Решить баг с Not Found
+            var user = await _identityServiceClient.GetUserById(userId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("userId", $"Пользователь с Id: {userId} не найден.");
+
+                return BadRequest(ModelState);
+            }
+
+            var currentUser = await _identityServiceClient.GetCurrentUserAsync(HttpContext.GetToken()!);
+            var existedSub = await _db.Subscriptions.FirstOrDefaultAsync(s => s.SubscriberId == currentUser!.Id && s.SubscriptionId == userId);
+
+            if (existedSub != null)
+            {
+                _db.Subscriptions.Remove(existedSub!);
+            }
+
+            var sub = new Subscription
+            {
+                Id = Guid.NewGuid(),
+                SubscriberId = currentUser!.Id,
+                SubscriptionId = user.Id
+            };
+
+            await _db.Subscriptions.AddAsync(sub);
+            var rows = await _db.SaveChangesAsync();
+
+            return rows > 0 ?
+                Ok(Mapping.Map<Subscription, SubscriptionDto>(sub)) :
+                Problem();
+        }
+
+        [HttpDelete("unsubscribe/{userId}")]
+        public async Task<IActionResult> UnSubscribeOnUser([FromRoute] Guid userId)
+        {
+            var user = await _identityServiceClient.GetUserById(userId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("userId", $"Пользователь с Id: {userId} не найден.");
+
+                return BadRequest(ModelState);
+            }
+
+            var currentUser = await _identityServiceClient.GetCurrentUserAsync(HttpContext.GetToken()!);
+            var existedSub = await _db.Subscriptions.FirstOrDefaultAsync(s => s.SubscriberId == currentUser!.Id && s.SubscriptionId == userId);
+
+            if (existedSub != null)
+            {
+                _db.Subscriptions.Remove(existedSub!);
+            }
+
+            var rows = await _db.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

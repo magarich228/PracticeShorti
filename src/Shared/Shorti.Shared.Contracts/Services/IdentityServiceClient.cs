@@ -24,5 +24,16 @@ namespace Shorti.Shared.Contracts.Services
 
             return await _identityServiceClient.GetFromJsonAsync<UserDto>("api/users/current");
         }
+
+        public async Task<UserDto?> GetUserById(Guid userId)
+        {
+            var response = await _identityServiceClient.GetAsync($"api/users/{userId}");
+
+            UserDto? user = response.IsSuccessStatusCode ?
+                await response.Content.ReadFromJsonAsync<UserDto>() :
+                default;
+
+            return user;
+        }
     }
 }
