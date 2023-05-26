@@ -7,7 +7,6 @@ using Shorti.Shared.Contracts.Services;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Extensions;
-using System.Diagnostics.Contracts;
 
 namespace Shorti.Activities.Api.Controllers
 {
