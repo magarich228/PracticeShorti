@@ -14,4 +14,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shorti.Shared.Contracts\Shorti.Shared.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shorti.Shared.Kernel\Shorti.Shared.Kernel.csproj" />
+  </ItemGroup>
+
 </Project>
