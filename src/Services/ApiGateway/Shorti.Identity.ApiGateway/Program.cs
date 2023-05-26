@@ -44,11 +44,16 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-app.UseCors(c => c.AllowAnyOrigin());
+app.UseCors(c =>
+{
+    c.AllowAnyHeader();
+    c.AllowAnyMethod();
+    c.AllowAnyOrigin();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseOcelot();
+await app.UseOcelot();
 
 app.Run();

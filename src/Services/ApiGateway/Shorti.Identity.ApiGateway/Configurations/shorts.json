@@ -50,6 +50,40 @@
         "AuthenticationProviderKey": "ShortiIdentity",
         "AllowedScopes": []
       }
+    },
+    {
+      "DownstreamPathTemplate": "/api/shorts/search",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5059
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/shorts/search",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/shorts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5059
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/shorts",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
     }
   ]
 }
