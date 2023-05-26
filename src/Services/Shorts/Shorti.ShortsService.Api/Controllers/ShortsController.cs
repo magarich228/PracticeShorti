@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
-using Shorti.Shared.Contracts.Identity;
+using Shorti.Shared.Contracts.Services;
 using Shorti.Shared.Contracts.Shorts;
 using Shorti.Shared.Kernel;
 using Shorti.Shared.Kernel.Abstractions;
+using Shorti.Shared.Kernel.Extensions;
 using Shorti.ShortsService.Api.Data;
 using Shorti.ShortsService.Api.Data.Models;
-using System.Net.Http.Headers;
 
 namespace Shorti.ShortsService.Api.Controllers
 {
@@ -17,16 +17,13 @@ namespace Shorti.ShortsService.Api.Controllers
     {
         private readonly IFileService _fileService;
         private readonly ShortsContext _db;
-        private readonly IHttpClientFactory _httpClientFactory;
 
         public ShortsController(
             IFileService fileService, 
-            ShortsContext db,
-            IHttpClientFactory httpClientFactory)
+            ShortsContext db)
         {
             _fileService = fileService;
             _db = db;
-            _httpClientFactory = httpClientFactory;
         }
 
         [HttpGet("{shortId}")]
@@ -84,8 +81,20 @@ namespace Shorti.ShortsService.Api.Controllers
                 NoContent();
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<ShortVideoDto>>> GetUserShorts([FromRoute] Guid userId)
+        {
+            var query = _db.Shorts.Where(s => s.AuthorId == userId);
+
+            return await query.AnyAsync() ?
+                Ok(await query.ToListAsync()) :
+                NoContent();
+        } 
+
         [HttpPost]
-        public async Task<IActionResult> Upload([FromForm] NewShortVideoDto shortVideoDto)
+        public async Task<IActionResult> Upload(
+            [FromForm] NewShortVideoDto shortVideoDto,
+            [FromServices] IIdentityServiceClient identityServiceClient)
         {
             var validationResult = await _fileService.ValidateFile(shortVideoDto.File);
 
@@ -103,24 +112,19 @@ namespace Shorti.ShortsService.Api.Controllers
 
             string fileName = $"{Guid.NewGuid()}{Path.GetExtension(shortVideoDto.File.FileName)}";
 
+            var token = HttpContext.GetToken();
+            
+            var authorId = (await identityServiceClient.GetCurrentUserAsync(token!))!.Id;
+
             await _fileService.DownloadAsync(shortVideoDto.File, fileName);
             var isDownloaded = System.IO.File.Exists(Path.Combine(_fileService.FilePath, fileName));
 
             var @short = Mapping.Map<NewShortVideoDto, ShortVideo>(shortVideoDto);
 
-            var identityClient = _httpClientFactory.CreateClient("IdentityClient");
-
-            var token = HttpContext.Request.Headers["Authorization"]
-                    .FirstOrDefault()?
-                    .Split(" ")
-                    .Last();
-            identityClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var authorId = (await identityClient.GetFromJsonAsync<UserDto>("api/Users/current"))!.Id;
-
             @short.Id = Guid.NewGuid();
             @short.AuthorId = authorId;
             @short.FileName = $"shorts/{fileName}";
+            @short.UploadedAt = DateTime.UtcNow;
 
             await _db.Shorts.AddAsync(@short);
             var rows = await _db.SaveChangesAsync();

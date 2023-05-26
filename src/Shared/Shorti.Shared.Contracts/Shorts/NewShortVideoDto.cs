@@ -11,7 +11,6 @@ namespace Shorti.Shared.Contracts.Shorts
 
         [StringLength(200)]
         public string? Description { get; set; }
-        public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
 
         [Required]
         public IFormFile File { get; set; } = null!;
