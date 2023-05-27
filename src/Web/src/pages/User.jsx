@@ -1,31 +1,33 @@
-import React, { useContext, useEffect } from 'react'
-import { useState } from 'react';
+import React, {useContext, useState, useEffect} from 'react'
+import NavBar from '../components/NavBar/NavBar'
+import { useParams } from 'react-router-dom'
+import { AuthContext } from '../context'
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
-import NavBar from '../components/NavBar/NavBar';
-import VideoData from '../components/VideoData/VideoData';
 import Search from '../components/Search/Search';
-import UserService from '../API/userService';
-import { AuthContext } from '../context';
-import { useRefreshToken } from '../hooks/authHooks';
+import VideoData from '../components/VideoData/VideoData';
 import ShortsService from '../API/shortsService';
 
-export default function Main() {
-    // const videos = ["/short4.mp4", "/short2.mp4", "/short3.mp4", "/short1.mp4", "/video1.mp4", "/video2.mp4", "/video3.mp4"];
+export default function Profile() {
+    const {id} = useParams();
+    const {curUserData} = useContext(AuthContext);
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
     const {tokens} = useContext(AuthContext);
-    const getShorts = useRefreshToken(ShortsService.getShorts);
 
     useEffect(() => {
-        (async () => {
-            const res = await getShorts(tokens.accessToken, 1, 11);
-            console.log(res);
-            const json = await res.json();
-            console.log(json);
-
-            setVideos(json);
-        })();
-    }, []);
+        if (curUserData) {
+            (async () => {
+                const res = await ShortsService.getUserShorts(tokens.accessToken, id);
+                console.log("profile", res);
+                if (res.ok && res.status === 200) {
+                    const json = await res.json();
+                    console.log("profile", json);
+        
+                    setVideos(json);
+                }
+            })();
+        }
+    }, [curUserData, id]);
 
     return (
         <div className="MainPage">
@@ -44,7 +46,7 @@ export default function Main() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={!(id === curUserData.id)} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

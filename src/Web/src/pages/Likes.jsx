@@ -1,13 +1,27 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useEffect } from 'react'
+import { useState, useContext } from 'react';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import NavBar from '../components/NavBar/NavBar';
 import VideoData from '../components/VideoData/VideoData';
 import Search from '../components/Search/Search';
+import { AuthContext } from '../context';
+import { useRefreshToken } from '../hooks/authHooks';
+import ShortsService from '../API/shortsService';
 
 export default function Likes() {
-    const videos = ["/short4.mp4", "/short2.mp4", "/short3.mp4", "/short1.mp4", "/video1.mp4", "/video2.mp4", "/video3.mp4"];
+    const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
+    const {tokens, curUserData} = useContext(AuthContext);
+    const getShorts = useRefreshToken(ShortsService.getLikedShorts);
+
+    useEffect(() => {
+        (async () => {
+            const res = await getShorts(tokens.accessToken, curUserData.id);
+            console.log(res);
+            const json = res.json();
+            console.log(json);
+        })();
+    }, []);
 
     return (
         <div className="LikesPage">

@@ -9,10 +9,10 @@ import { getCookie, setCookie } from "./utils/cookies";
 import { useAuthorization } from "./hooks/authHooks";
 
 function App() {
-    const [isAuth, setIsAuth, tokens, setTokens] = useAuthorization();
+    const [isAuth, setIsAuth, tokens, setTokens, curUserData] = useAuthorization();
 
     return (
-        <AuthContext.Provider value={{isAuth, setIsAuth, tokens, setTokens}}>
+        <AuthContext.Provider value={{isAuth, setIsAuth, tokens, setTokens, curUserData}}>
             <BrowserRouter>
                 <div className="App">
                     <RouterList />

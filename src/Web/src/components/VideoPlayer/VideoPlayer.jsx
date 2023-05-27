@@ -84,12 +84,12 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                 <div className={s.feed} ref={feedEl}>
                     { 
                     videos.map((vid, index) =>
-                        <div className={s.video_block} key={vid}>
+                        <div className={s.video_block} key={vid.id}>
                             {
                             index === curVideo ? 
-                                <video className={s.video + " " + s.video + index} autoPlay muted playsInline loop preload="auto" src={vid}></video> 
+                                <video className={s.video + " " + s.video + index} autoPlay muted playsInline loop preload="auto" src={'http://localhost:5171/'+vid.fileName}></video> 
                                     :
-                                <video className={s.video + " " + s.video + index} loop preload="auto" src={vid}></video> 
+                                <video className={s.video + " " + s.video + index} loop preload="auto" src={'http://localhost:5171/'+vid.fileName}></video> 
                             }
                         </div>) 
                     }
