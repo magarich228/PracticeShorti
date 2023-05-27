@@ -1,13 +1,29 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import NavBar from '../components/NavBar/NavBar';
 import VideoData from '../components/VideoData/VideoData';
 import Search from '../components/Search/Search';
+import ShortsService from '../API/shortsService';
+import { AuthContext } from '../context';
 
 export default function Subscribes() {
-    const videos = ["/short4.mp4", "/short2.mp4", "/short3.mp4", "/short1.mp4", "/video1.mp4", "/video2.mp4", "/video3.mp4"];
+    const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
+    const {tokens, curUserData} = useContext(AuthContext);
+
+    useEffect(() => {
+        if (curUserData) {
+            (async () => {
+                const res = await ShortsService.getSubscriptionShorts(tokens.accessToken, curUserData.id);
+                console.log("like", res);
+                const json = await res.json();
+                console.log("like", json);
+
+                setVideos(json);
+            })();
+        }
+    }, [curUserData]);
 
     return (
         <div className="SubsPage">
@@ -26,7 +42,7 @@ export default function Subscribes() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

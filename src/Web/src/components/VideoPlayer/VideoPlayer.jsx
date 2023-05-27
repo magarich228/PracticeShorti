@@ -45,6 +45,11 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
         );
     }
 
+    
+    function likeVideo(e) {
+        
+    }
+
     function next() {
         if (curVideo < videos.length - 1) {
             document.querySelector("."+ s.video + (curVideo)).pause();
@@ -106,7 +111,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
 
             {
                 like &&
-                <div className={s.likeBtn}>
+                <div className={s.likeBtn} onClick={likeVideo}>
                     <button>
                         <LikeIcon liked={false}/>
                     </button>

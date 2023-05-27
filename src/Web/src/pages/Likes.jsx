@@ -12,16 +12,19 @@ export default function Likes() {
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
     const {tokens, curUserData} = useContext(AuthContext);
-    const getShorts = useRefreshToken(ShortsService.getLikedShorts);
 
     useEffect(() => {
-        (async () => {
-            const res = await getShorts(tokens.accessToken, curUserData.id);
-            console.log(res);
-            const json = res.json();
-            console.log(json);
-        })();
-    }, []);
+        if (curUserData) {
+            (async () => {
+                const res = await ShortsService.getLikedShorts(tokens.accessToken, curUserData.id);
+                console.log("like", res);
+                const json = await res.json();
+                console.log("like", json);
+
+                setVideos(json);
+            })();
+        }
+    }, [curUserData]);
 
     return (
         <div className="LikesPage">
@@ -40,7 +43,7 @@ export default function Likes() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

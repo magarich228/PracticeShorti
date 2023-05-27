@@ -36,7 +36,7 @@ export default class ShortsService {
     }
 
     static async getSubscriptionShorts(accessToken, userId) {
-        const res = await fetch(`http://localhost:5171/api/subscription-shorts/${userId}`, {
+        const res = await fetch(`http://localhost:5171/api/Activities/subscription-shorts/${userId}`, {
             method: "GET",
             mode: "cors",
             headers: {
