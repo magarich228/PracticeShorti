@@ -9,7 +9,7 @@ import ArrowDown from '../UI/ArrowDown/ArrowDown';
 import ArrowUp from '../UI/ArrowUp/ArrowUp';
 import ActivitiesService from '../../API/activitiesService';
 
-export default function VideoPlayer({videos, curVideo, setCurVideo, children, like}) {
+export default function VideoPlayer({videos, curVideo, setCurVideo, children, like, preview = true}) {
     const feedEl = useRef();
     const isFirstVid = useRef(true);
     const [isVideosMuted, setIsVideosMuted] = useState(true);
@@ -108,9 +108,9 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                         <div className={s.video_block} key={vid.id}>
                             {
                             index === curVideo ? 
-                                <video className={s.video + " " + s.video + index} autoPlay muted playsInline loop preload="auto" src={'http://localhost:5171/'+vid.fileName}></video> 
+                                <video className={s.video + " " + s.video + index} autoPlay muted playsInline loop preload="auto" src={(preview ? 'http://localhost:3000/' : 'http://localhost:5171/')+vid.fileName}></video> 
                                     :
-                                <video className={s.video + " " + s.video + index} loop preload="auto" src={'http://localhost:5171/'+vid.fileName}></video> 
+                                <video className={s.video + " " + s.video + index} loop preload="auto" src={(preview ? 'http://localhost:3000/' : 'http://localhost:5171/')+vid.fileName}></video> 
                             }
                         </div>) 
                     }

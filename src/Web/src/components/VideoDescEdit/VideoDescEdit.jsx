@@ -19,6 +19,9 @@ export default function VideoDescEdit({onVideoLoad}) {
 
             if (json.fileDownloadIsSuccess) {
                 alert("Видео успешно загружено!");
+                e.target.elements.Description.value = "";
+                e.target.elements.File.value = "";
+                e.target.elements.Title.value = "";
             } else {
                 alert("что то пошло не так...");
             }
