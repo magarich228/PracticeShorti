@@ -124,11 +124,7 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/avatars/{file}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ShortiIdentity",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "GET" ]
     },
     //Shorts
     {
@@ -176,11 +172,7 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/shorts/{file}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ShortiIdentity",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "GET" ]
     },
     {
       "DownstreamPathTemplate": "/api/shorts/search",
