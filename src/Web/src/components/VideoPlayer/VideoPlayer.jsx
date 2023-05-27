@@ -21,7 +21,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
     useEffect(() => {
         if (curUserData) {
             (async () => {
-                // const res = await ActivitiesService.getUserSubscriptions(tokens.accessToken, curUserData.id);
+                // const res = await ActivitiesService.getUserLikes(tokens.accessToken, curUserData.id);
                 // console.log("liked User videos", res);
                 // const json = await res.text();
                 // console.log("liked User videos", json);
@@ -128,6 +128,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
             {
                 like &&
                 <div className={s.likeBtn} onClick={likeVideo}>
+                    10
                     <button>
                         <LikeIcon liked={false}/>
                     </button>

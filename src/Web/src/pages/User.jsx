@@ -47,7 +47,7 @@ export default function Profile() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData subscribeBtn={!(id === curUserData.id)} curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={!(id === (curUserData ? curUserData.id : ""))} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

@@ -14,17 +14,20 @@ export default function Main() {
     const [curVideo, setCurVideo] = useState(0);
     const {tokens} = useContext(AuthContext);
     const getShorts = useRefreshToken(ShortsService.getShorts);
+    const [page, setPage] = useState(1);
+    // const [totalCount, setTotalCount] = useState(1);
+    const videosCount = 2;
 
     useEffect(() => {
         (async () => {
-            const res = await getShorts(tokens.accessToken, 1, 11);
-            console.log(res);
+            const res = await getShorts(tokens.accessToken, page, videosCount);
+            console.log("headers", res.headers["Count"]);
             const json = await res.json();
             console.log(json);
 
             setVideos(json);
         })();
-    }, []);
+    }, [page]);
 
     return (
         <div className="MainPage">

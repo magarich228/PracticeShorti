@@ -45,6 +45,32 @@ export default class ActivitiesService {
         return res;
     }
 
+    /* --- */
+    static async getCountLikes(accessToken, shortId) {
+        const res = await fetch(`http://localhost:5171/api/Activities/count-likes/${shortId}`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Authorization": 'Bearer ' + accessToken
+            }
+        });
+
+        return await res.text();
+    }
+
+    static async getCountSubs(accessToken, userId) {
+        const res = await fetch(`http://localhost:5171/api/Activities/count-subscribers/${userId}`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Authorization": 'Bearer ' + accessToken
+            }
+        });
+
+        return await res.text();
+    }
+
+
     static async getUserLikes(accessToken, userId) {
         const res = await fetch(`http://localhost:5171/api/Activities/${userId}/likes`, {
             method: "GET",
