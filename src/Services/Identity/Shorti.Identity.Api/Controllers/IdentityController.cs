@@ -84,7 +84,7 @@ namespace Shorti.Identity.Api.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public ActionResult<LoginResultDto> RefreshToken([FromBody] RefreshTokenRequestDto request)
+        public async Task<ActionResult<LoginResultDto>> RefreshToken([FromBody] RefreshTokenRequestDto request)
         {
             try
             {
@@ -101,13 +101,13 @@ namespace Shorti.Identity.Api.Controllers
                 var claims = _identityManager.DecodeJwtToken(accessToken).claims.Claims;
                 var jwtResult = _identityManager.Refresh(request.RefreshToken, accessToken, DateTime.Now);
 
-                return Ok(new LoginResultDto
+                return Ok(await Task.FromResult(new LoginResultDto
                 {
                     Id = claims.GetId(),
                     UserName = claims.GetUsername(),
                     AccessToken = jwtResult.AccessToken,
                     RefreshToken = jwtResult.RefreshToken.TokenString
-                });
+                }));
             }
             catch (SecurityTokenException e)
             {
@@ -116,7 +116,7 @@ namespace Shorti.Identity.Api.Controllers
         }
 
         [HttpDelete("logout")]
-        public ActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             var token = HttpContext.Request.Headers["Authorization"]
                 .FirstOrDefault()?
@@ -128,14 +128,17 @@ namespace Shorti.Identity.Api.Controllers
                 return Unauthorized();
             }
 
-            var decode = _identityManager.DecodeJwtToken(token);
-            var claims = decode.claims.Claims;
+            await Task.Run(() =>
+            {
+                var decode = _identityManager.DecodeJwtToken(token);
+                var claims = decode.claims.Claims;
 
-            _identityManager.RemoveRefreshTokenByUser(
-                claims.GetId(),
-                claims.GetUsername());
+                _identityManager.RemoveRefreshTokenByUser(
+                    claims.GetId(),
+                    claims.GetUsername());
 
-            HttpContext.Response.Headers.Remove(IdentityConstants.AuthorizationHeaderName);
+                HttpContext.Response.Headers.Remove(IdentityConstants.AuthorizationHeaderName);
+            });
 
             return Ok();
         }

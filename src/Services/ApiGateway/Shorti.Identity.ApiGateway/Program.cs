@@ -7,8 +7,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("Configurations/identity.json", false, true);
-builder.Configuration.AddJsonFile("Configurations/shorts.json", false, true);
+builder.Configuration.AddJsonFile("ocelot.json", false, true);
 
 var identityConfig = new IdentityConfiguration();
 builder.Services.AddSingleton(identityConfig);
