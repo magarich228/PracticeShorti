@@ -11,6 +11,21 @@ namespace Shorti.Shared.Contracts.Services
                 client.BaseAddress = new Uri("http://localhost:5171/");
             });
 
+            services.AddHttpClient("ShortsHost", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5059/");
+            });
+
+            services.AddHttpClient("IdentityHost", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5064/");
+            });
+
+            services.AddHttpClient("ActivitiesHost", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5031/");
+            });
+
             services.AddTransient<IIdentityServiceClient, IdentityServiceClient>();
             services.AddTransient<IShortsServiceClient, ShortsServiceClient>();
 
