@@ -80,7 +80,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Users/avatarUpdate",
+      "DownstreamPathTemplate": "/api/Users/avatar-update",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -89,7 +89,7 @@
         }
       ],
       "RouteIsCaseSensitive": false,
-      "UpstreamPathTemplate": "/api/Users/avatarUpdate",
+      "UpstreamPathTemplate": "/api/Users/avatar-update",
       "UpstreamHttpMethod": [ "PUT" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ShortiIdentity",
