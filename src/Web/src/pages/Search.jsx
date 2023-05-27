@@ -1,33 +1,29 @@
-import React, {useContext, useState, useEffect} from 'react'
-import NavBar from '../components/NavBar/NavBar'
-import { useParams } from 'react-router-dom'
-import { AuthContext } from '../context'
+import React, {useState, useContext, useEffect} from 'react'
+import { useParams } from 'react-router-dom';
+import { AuthContext } from '../context';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
-import Search from '../components/Search/Search';
+import NavBar from '../components/NavBar/NavBar';
 import VideoData from '../components/VideoData/VideoData';
 import ShortsService from '../API/shortsService';
 
-export default function Profile() {
-    const {id} = useParams();
-    const {curUserData} = useContext(AuthContext);
+export default function Search() {
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
     const {tokens} = useContext(AuthContext);
+    const {query} = useParams();
 
     useEffect(() => {
-        if (curUserData) {
+        if (query) {
             (async () => {
-                const res = await ShortsService.getUserShorts(tokens.accessToken, id);
-                console.log("profile", res);
-                if (res.ok && res.status === 200) {
-                    const json = await res.json();
-                    console.log("profile", json);
-        
-                    setVideos(json);
-                }
+                const res = await ShortsService.findShorts(tokens.accessToken, query);
+                console.log("search", res);
+                const json = await res.json();
+                console.log("search", json);
+
+                setVideos(json);
             })();
         }
-    }, [curUserData, id]);
+    }, []);
 
     return (
         <div className="MainPage">
@@ -39,7 +35,6 @@ export default function Profile() {
                     like={true}
                     preview={false}
                 >
-                    <Search />
                 </VideoPlayer>
             </main>
             <aside className="MainAside">
@@ -47,7 +42,7 @@ export default function Profile() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData subscribeBtn={!(id === curUserData.id)} curVideo={videos[curVideo]} />
+                    <VideoData curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

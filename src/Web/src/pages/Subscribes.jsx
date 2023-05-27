@@ -33,6 +33,7 @@ export default function Subscribes() {
                     curVideo={curVideo} 
                     setCurVideo={(curIndex) => setCurVideo(curIndex)} 
                     like={true}
+                    preview={false}
                 >
                     <Search />
                 </VideoPlayer>

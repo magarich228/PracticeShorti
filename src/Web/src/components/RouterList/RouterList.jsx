@@ -9,6 +9,7 @@ import Profile from '../../pages/Profile'
 import Likes from '../../pages/Likes'
 import Subscribes from '../../pages/Subscribes'
 import User from '../../pages/User'
+import Search from '../../pages/Search'
 
 export default function RouterList() {
     const {isAuth} = useContext(AuthContext);
@@ -22,6 +23,7 @@ export default function RouterList() {
                 <Route path="/subscribes" element={<Subscribes />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile/:id" element={<User />} />
+                <Route path="/search/:query" element={<Search />} />
                 <Route path="/login" element={<Navigate to="/" replace/>} />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>

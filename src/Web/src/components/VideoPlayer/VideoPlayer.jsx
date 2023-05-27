@@ -9,7 +9,7 @@ import ArrowDown from '../UI/ArrowDown/ArrowDown';
 import ArrowUp from '../UI/ArrowUp/ArrowUp';
 import ActivitiesService from '../../API/activitiesService';
 
-export default function VideoPlayer({videos, curVideo, setCurVideo, children, like, preview = true}) {
+export default function VideoPlayer({videos, curVideo, setCurVideo, children, like, preview = false}) {
     const feedEl = useRef();
     const isFirstVid = useRef(true);
     const [isVideosMuted, setIsVideosMuted] = useState(true);

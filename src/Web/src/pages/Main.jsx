@@ -10,7 +10,6 @@ import { useRefreshToken } from '../hooks/authHooks';
 import ShortsService from '../API/shortsService';
 
 export default function Main() {
-    // const videos = ["/short4.mp4", "/short2.mp4", "/short3.mp4", "/short1.mp4", "/video1.mp4", "/video2.mp4", "/video3.mp4"];
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
     const {tokens} = useContext(AuthContext);
@@ -35,6 +34,7 @@ export default function Main() {
                     curVideo={curVideo} 
                     setCurVideo={(curIndex) => setCurVideo(curIndex)} 
                     like={true}
+                    preview={false}
                 >
                     <Search />
                 </VideoPlayer>

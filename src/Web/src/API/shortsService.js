@@ -60,4 +60,16 @@ export default class ShortsService {
 
         return res;
     }
+
+    static async findShorts(accessToken, words) {
+        const res = await fetch(`http://localhost:5171/api/Shorts/search?words=${words}`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Authorization": 'Bearer ' + accessToken,
+            }
+        });
+
+        return res;
+    }
 }

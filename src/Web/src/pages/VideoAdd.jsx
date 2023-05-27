@@ -17,6 +17,7 @@ export default function VideoAdd() {
                     videos={videos} 
                     curVideo={curVideo} 
                     setCurVideo={(curIndex) => setCurVideo(curIndex)} 
+                    preview={true}
                 ></VideoPlayer>
             </main>
             <aside className="VideoAddAside">
