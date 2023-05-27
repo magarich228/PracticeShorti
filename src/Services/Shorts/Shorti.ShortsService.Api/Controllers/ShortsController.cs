@@ -72,7 +72,10 @@ namespace Shorti.ShortsService.Api.Controllers
             var allShortsCount = await _db.Shorts.CountAsync();
             HttpContext.Response.Headers.Add(new KeyValuePair<string, StringValues>("Count", allShortsCount.ToString()));
 
-            var query =  _db.Shorts.Skip((page - 1) * count).Take(count);
+            var query =  _db.Shorts
+                .OrderBy(s => s.UploadedAt)
+                .Skip((page - 1) * count)
+                .Take(count);
 
             var shorts = await query.ToListAsync();
 
