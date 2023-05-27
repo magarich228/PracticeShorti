@@ -218,5 +218,29 @@ namespace Shorti.Activities.Api.Controllers
 
             return Ok(await query.CountAsync());
         }
+
+        [HttpGet("{userId}/subscriptions")]
+        public async Task<ActionResult<IEnumerable<SubscriptionDto>>> GetUserSubscriptions([FromRoute] Guid userId)
+        {
+            var query = _db.Subscriptions.Where(s => s.SubscriberId == userId);
+
+            var subscriptions = await query
+                .Select(s => Mapping.Map<Subscription, SubscriptionDto>(s))
+                .ToListAsync();
+
+            return Ok(subscriptions);
+        }
+
+        [HttpGet("{userId}/likes")]
+        public async Task<ActionResult<IEnumerable<LikeReactionDto>>> GetUserLikes([FromRoute] Guid userId)
+        {
+            var query = _db.Likes.Where(l => l.UserId == userId);
+
+            var likes = await query
+                .Select(l => Mapping.Map<LikeReaction, LikeReactionDto>(l))
+                .ToListAsync();
+
+            return Ok(likes);
+        }
     }
 }
