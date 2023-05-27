@@ -29,7 +29,7 @@ export function useAuthorization() {
         }
     }, [tokens]);
 
-    return [isAuth, setIsAuth, tokens, setTokens, curUserData];
+    return [isAuth, setIsAuth, tokens, setTokens, curUserData, setCurUserData];
 }
 
 export function useRefreshToken(requestFunc) {

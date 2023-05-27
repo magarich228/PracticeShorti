@@ -7,7 +7,6 @@ import Search from '../components/Search/Search';
 import VideoDescEdit from '../components/VideoDescEdit/VideoDescEdit';
 
 export default function VideoAdd() {
-    // const videos = ["/short4.mp4", "/short2.mp4", "/short3.mp4", "/short1.mp4", "/video1.mp4", "/video2.mp4", "/video3.mp4"];
     const [videos, setVideos] = useState([]);
     const [curVideo, setCurVideo] = useState(0);
 
@@ -26,7 +25,14 @@ export default function VideoAdd() {
                 </nav>
                 <div className="AsideContent">
                     <VideoDescEdit onVideoLoad={(video) => {
-                        setVideos([video]);
+                        setVideos([{
+                            authorId: "",
+                            description: "",
+                            fileName: video,
+                            id: "",
+                            title: "",
+                            uploadedAt: ""
+                        }]);
                     }}/>
                 </div>
             </aside>

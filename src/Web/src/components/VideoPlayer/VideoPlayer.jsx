@@ -1,17 +1,33 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect, useRef, useState } from "react";
+import { AuthContext } from '../../context';
 import s from './VideoPlayer.module.css'
 import VolumeIcon from '../UI/VolumeIcon/VolumeIcon'
 import PlayIcon from '../UI/PlayIcon/PlayIcon';
 import LikeIcon from '../UI/LikeIcon/LikeIcon';
 import ArrowDown from '../UI/ArrowDown/ArrowDown';
 import ArrowUp from '../UI/ArrowUp/ArrowUp';
+import ActivitiesService from '../../API/activitiesService';
 
 export default function VideoPlayer({videos, curVideo, setCurVideo, children, like}) {
     const feedEl = useRef();
     const isFirstVid = useRef(true);
     const [isVideosMuted, setIsVideosMuted] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
+    const {curUserData, tokens} = useContext(AuthContext);
+
+    console.log("videos", videos);
+
+    useEffect(() => {
+        if (curUserData) {
+            (async () => {
+                // const res = await ActivitiesService.getUserSubscriptions(tokens.accessToken, curUserData.id);
+                // console.log("liked User videos", res);
+                // const json = await res.text();
+                // console.log("liked User videos", json);
+            })();
+        }
+    }, [curUserData]);
   
     useEffect(() => {
         if (!videos.length) return;
@@ -47,7 +63,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
 
     
     function likeVideo(e) {
-        
+
     }
 
     function next() {

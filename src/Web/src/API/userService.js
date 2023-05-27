@@ -29,7 +29,7 @@ export default class UserService {
             mode: "cors",
             headers: {
                 "Authorization": 'Bearer ' + accessToken,
-                "Content-Type": "multipart/form-data"
+                // "Content-Type": "multipart/form-data"
             },
             body: new FormData(form)
         });

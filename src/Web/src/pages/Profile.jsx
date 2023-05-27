@@ -8,10 +8,9 @@ import ShortsService from '../API/shortsService';
 import UserService from '../API/userService';
 
 export default function Profile() {
-    const {curUserData} = useContext(AuthContext);
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
-    const {tokens} = useContext(AuthContext);
+    const {tokens, setCurUserData, curUserData} = useContext(AuthContext);
     const avatarForm = useRef();
 
     console.log(avatarForm);
@@ -34,12 +33,18 @@ export default function Profile() {
     function onAvatarSend(e) {
         e.preventDefault();
 
-        (async () => {
-            const res = await UserService.avatarUpdate(tokens.accessToken, avatarForm.current)
-            console.log("avatar up", res);
-            const json = await res.json();
-            console.log("avatar up", json);
-        })();
+        if (avatarForm.current.elements.avatar.value) {
+            (async () => {
+                const res = await UserService.avatarUpdate(tokens.accessToken, avatarForm.current)
+                console.log("avatar up", res);
+                const text = await res.text();
+                console.log("avatar up", text);
+
+                setCurUserData({...curUserData, avatarPath: text});
+
+                avatarForm.current.elements.avatar.value = "";
+            })();
+        }
     }
 
     return (
@@ -60,7 +65,7 @@ export default function Profile() {
                 </nav>
                 <div className="AsideContent">
                     <VideoData subscribeBtn={false} curVideo={videos[curVideo]} />
-                    <form ref={avatarForm} method='PUT' onSubmit={onAvatarSend}>
+                    <form ref={avatarForm} className='avatarUpdateForm' method='PUT' onSubmit={onAvatarSend}>
                         <input name='avatar' type="file" accept='image/png, image/jpeg' />
                         <button type='submit'>Загрузить аватарку</button>
                     </form>

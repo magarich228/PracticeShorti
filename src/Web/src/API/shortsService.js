@@ -46,4 +46,18 @@ export default class ShortsService {
 
         return res;
     }
+
+    static async publicateShort(accessToken, form) {
+        const res = await fetch(`http://localhost:5171/api/Shorts`, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Authorization": 'Bearer ' + accessToken,
+                // "Content-Type": "multipart/form-data"
+            },
+            body: new FormData(form)
+        });
+
+        return res;
+    }
 }

@@ -117,3 +117,22 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ---------- end VideoAdd page -----------*/
 
+/* ---------- Profile -------------- */
+
+.avatarUpdateForm {
+    margin: 0 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.avatarUpdateForm input {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.avatarUpdateForm button {
+    display: block;
+}
+
+/* ---------- end Profile --------- */
