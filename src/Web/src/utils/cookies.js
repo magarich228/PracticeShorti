@@ -1,22 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>React App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-
-    <script>
-    function getCookie(name) {
+export function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
       "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
 
-function setCookie(name, value, options = {}) {
+export function setCookie(name, value, options = {}) {
 
     options = {
         path: '/',
@@ -40,11 +29,8 @@ function setCookie(name, value, options = {}) {
     document.cookie = updatedCookie;
 }
 
-function deleteCookie(name) {
+export function deleteCookie(name) {
     setCookie(name, "", {
         'max-age': -1
     })
 }
-    </script>
-  </body>
-</html>

@@ -3,13 +3,16 @@ import "normalize.css"
 import "./main.css"
 import RouterList from "./components/RouterList/RouterList";
 import { AuthContext } from "./context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import LoginService from "./API/loginService";
+import { getCookie, setCookie } from "./utils/cookies";
+import { useAuthorization } from "./hooks/authHooks";
 
 function App() {
-    const [isAuth, setIsAuth] = useState(localStorage.getItem("auth") == 'true');
+    const [isAuth, setIsAuth, tokens, setTokens] = useAuthorization();
 
     return (
-        <AuthContext.Provider value={{isAuth, setIsAuth}}>
+        <AuthContext.Provider value={{isAuth, setIsAuth, tokens, setTokens}}>
             <BrowserRouter>
                 <div className="App">
                     <RouterList />
