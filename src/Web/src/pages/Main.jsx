@@ -15,8 +15,19 @@ export default function Main() {
     const {tokens} = useContext(AuthContext);
     const getShorts = useRefreshToken(ShortsService.getShorts);
     const [page, setPage] = useState(1);
-    // const [totalCount, setTotalCount] = useState(1);
     const videosCount = 20;
+    const [targetUser, setTargetUser] = useState({});
+
+    useEffect(() => {
+        if (videos.length) {
+            (async () => {
+                const res = await UserService.getById(tokens.accessToken, videos[curVideo].authorId);
+                const json = await res.json();
+
+                setTargetUser(json);
+            })();
+        }
+    }, [curVideo, videos]);
 
     useEffect(() => {
         (async () => {
@@ -47,7 +58,7 @@ export default function Main() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
+                    <VideoData user={targetUser} subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

@@ -15,17 +15,21 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
     const [isVideosMuted, setIsVideosMuted] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
     const {curUserData, tokens} = useContext(AuthContext);
+
     const [likesOnCurVideo, setLiketOnCurVideo] = useState(0);
+    const [curUserLikes, setCurUserLikes] = useState([]);
 
     console.log("videos", videos);
 
     useEffect(() => {
         if (curUserData) {
             (async () => {
-                // const res = await ActivitiesService.getUserLikes(tokens.accessToken, curUserData.id);
-                // console.log("liked User videos", res);
-                // const json = await res.text();
-                // console.log("liked User videos", json);
+                const res = await ActivitiesService.getUserLikes(tokens.accessToken, curUserData.id);
+                console.log("liked User videos", res);
+                const json = await res.json();
+                console.log("liked User videos", json);
+
+                setCurUserLikes(json.map(el => el.shortId));
             })();
         }
     }, [curUserData]);
@@ -38,7 +42,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                 setLiketOnCurVideo(res);
             })();
         }
-    }, [like, videos]);
+    }, [like, videos, curVideo]);
   
     useEffect(() => {
         if (!videos.length) return;
@@ -73,8 +77,24 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
     }
 
     
-    function likeVideo(e) {
+    async function likeVideo(e) {
+        if (curUserLikes.includes(videos[curVideo].id)) {
+            const res = await ActivitiesService.unlikeVideo(tokens.accessToken, videos[curVideo].id);
+            console.log("unlike vid", res);
+            const json = await res.text();
+            console.log("unlike vid", json);
 
+            setCurUserLikes(curUserLikes.filter((shortId) => shortId != videos[curVideo].id));
+            setLiketOnCurVideo(Number(likesOnCurVideo) - 1);
+        } else {
+            const res = await ActivitiesService.likeVideo(tokens.accessToken, videos[curVideo].id);
+            console.log("like vid", res);
+            const json = await res.json();
+            console.log("like vid", json);
+            
+            setCurUserLikes([...curUserLikes, videos[curVideo].id]);
+            setLiketOnCurVideo(Number(likesOnCurVideo) + 1);
+        }
     }
 
     function next() {
@@ -114,7 +134,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
         <div className={s.video_wrapper}>
             <div className={s.videos_container}>
                 <div className={s.feed} ref={feedEl}>
-                    { 
+                    {
                     videos.map((vid, index) =>
                         <div className={s.video_block} key={vid.id}>
                             {
@@ -141,7 +161,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                 <div className={s.likeBtn} onClick={likeVideo}>
                     {likesOnCurVideo}
                     <button>
-                        <LikeIcon liked={false}/>
+                        <LikeIcon liked={curUserLikes.includes(videos[curVideo].id)}/>
                     </button>
                 </div>
             }
