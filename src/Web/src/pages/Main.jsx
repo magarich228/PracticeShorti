@@ -7,21 +7,27 @@ import Search from '../components/Search/Search';
 import UserService from '../API/userService';
 import { AuthContext } from '../context';
 import { useRefreshToken } from '../hooks/authHooks';
+import ShortsService from '../API/shortsService';
 
 export default function Main() {
-    const videos = ["/short4.mp4", "/short2.mp4", "/short3.mp4", "/short1.mp4", "/video1.mp4", "/video2.mp4", "/video3.mp4"];
+    const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
     const {tokens} = useContext(AuthContext);
-    const getCurUser = useRefreshToken(UserService.getCur);
+    const getShorts = useRefreshToken(ShortsService.getShorts);
+    const [page, setPage] = useState(1);
+    // const [totalCount, setTotalCount] = useState(1);
+    const videosCount = 20;
 
     useEffect(() => {
         (async () => {
-            const res = await getCurUser(tokens.accessToken);
-            console.log(res);
+            const res = await getShorts(tokens.accessToken, page, videosCount);
+            console.log("headers", res.headers["Count"]);
             const json = await res.json();
             console.log(json);
+
+            setVideos(json);
         })();
-    }, []);
+    }, [page]);
 
     return (
         <div className="MainPage">
@@ -31,6 +37,7 @@ export default function Main() {
                     curVideo={curVideo} 
                     setCurVideo={(curIndex) => setCurVideo(curIndex)} 
                     like={true}
+                    preview={false}
                 >
                     <Search />
                 </VideoPlayer>
@@ -40,7 +47,7 @@ export default function Main() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

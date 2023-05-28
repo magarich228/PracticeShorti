@@ -1,21 +1,32 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import s from './VideoDescEdit.module.css'
 import UserData from '../UserData/UserData'
+import { AuthContext } from '../../context';
+import ShortsService from '../../API/shortsService';
 
 export default function VideoDescEdit({onVideoLoad}) {
-    const [tags, setTags] = useState([]);
-    const [newTag, setNewTag] = useState("");
-    const [description, setDescription] = useState({name: "", desc: ""});
+    const form = useRef();
+    const {tokens} = useContext(AuthContext);
 
-    function addTag(e) {
-        if (!newTag) return;
+    function publicate(e) {
+        e.preventDefault();
 
-        setTags([...tags, newTag]);
-        setNewTag("");
-    }
+        (async () => {
+            const res = await ShortsService.publicateShort(tokens.accessToken, e.target);
+            console.log(res);
+            const json = await res.json();
+            console.log(json);
 
-    function publicate() {
-
+            if (json.fileDownloadIsSuccess) {
+                alert("Видео успешно загружено!");
+                e.target.elements.Description.value = "";
+                e.target.elements.File.value = "";
+                e.target.elements.Title.value = "";
+            } else {
+                alert("что то пошло не так...");
+            }
+        })();
+        console.dir(e.target);
     }
 
     return (
@@ -24,44 +35,20 @@ export default function VideoDescEdit({onVideoLoad}) {
                 <span>Сегодня</span>
             </UserData>
             <div className={s.desc}>
-                <form className={s.form} onSubmit={(e) => e.preventDefault()}>
+                <form ref={form} className={s.form} onSubmit={publicate}>
                     <label className={s.name}>
                         Название: 
-                        <input type="text" value={description.name} onInput={(e) => {
-                            setDescription({...description, name: e.target.name});
-                        }} />
+                        <input name='Title' type="text" />
                     </label>
                     <label className={s.descText}>
                         Описание:
-                        <textarea 
-                            cols="10" 
-                            rows="7"
-                            value={description.desc}
-                            onInput={(e) => {
-                                if (e.target.value.length >= 300) return;
-
-                                setDescription({...description, desc: e.target.value});
-                            }}
-                        ></textarea>
+                        <textarea cols="10" rows="7" name='Description'></textarea>
                     </label>
-                    <label className={s.taginput}>
-                        Добавить тег:
-                        <input type="text" value={newTag} onInput={(e) => setNewTag(e.target.value)} />
-                        <button type='button' onClick={addTag}>Добавить</button>
-                    </label>
+                    <input name='File' className={s.file} type="file" accept="video/mp4" onChange={(e) => {
+                        onVideoLoad(e.target.files[0].name);
+                    }}/>
+                    <button className={s.sbmt} type='submit'>Опубликовать</button>
                 </form>
-                <ul className={s.tags}>
-                    {
-                        tags.length ?
-                        tags.map((tag) => <li key={tag} className={s.tag}>#{tag}</li>)
-                            :
-                        "пусто"
-                    }
-                </ul>
-                <input className={s.file} type="file" accept="video/mp4" onChange={(e) => {
-                    onVideoLoad(e.target.files[0].name);
-                }}/>
-                <button onClick={publicate} className={s.sbmt} type='submit'>Опубликовать</button>
             </div>
         </div>
     )

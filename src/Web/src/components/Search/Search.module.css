@@ -32,7 +32,26 @@ input::-webkit-input-placeholder {
     color: white;
 }
 
-.container:hover .searchInput {
+.container:hover .searchInput, .container:hover .btn {
     visibility: visible;
     opacity: 1;
+}
+
+.btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-left: 5px;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+
+.btn:focus {
+    outline: none;
+}
+
+.btn svg {
+    color: white;
 }

@@ -80,7 +80,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Users/avatarUpdate",
+      "DownstreamPathTemplate": "/api/Users/avatar-update",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -89,7 +89,7 @@
         }
       ],
       "RouteIsCaseSensitive": false,
-      "UpstreamPathTemplate": "/api/Users/avatarUpdate",
+      "UpstreamPathTemplate": "/api/Users/avatar-update",
       "UpstreamHttpMethod": [ "PUT" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ShortiIdentity",
@@ -124,11 +124,7 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/avatars/{file}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ShortiIdentity",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "GET" ]
     },
     //Shorts
     {
@@ -176,11 +172,7 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/shorts/{file}",
-      "UpstreamHttpMethod": [ "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ShortiIdentity",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "GET" ]
     },
     {
       "DownstreamPathTemplate": "/api/shorts/search",
@@ -364,6 +356,40 @@
       ],
       "RouteIsCaseSensitive": false,
       "UpstreamPathTemplate": "/api/Activities/count-subscribers/{userId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Activities/{userId}/subscriptions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5031
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Activities/{userId}/subscriptions",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ShortiIdentity",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Activities/{userId}/likes",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5031
+        }
+      ],
+      "RouteIsCaseSensitive": false,
+      "UpstreamPathTemplate": "/api/Activities/{userId}/likes",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ShortiIdentity",

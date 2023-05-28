@@ -25,8 +25,8 @@ export default function LoginForm() {
             const res = await LoginService.signin(authData);
             const json = await res.json();
 
-            console.log(res);
-            console.log(json);
+            // console.log(res);
+            // console.log(json);
 
             if (res.ok) {
                 setTokens({accessToken: json.accessToken, refreshToken: json.refreshToken});
