@@ -1,17 +1,44 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect, useRef, useState } from "react";
+import { AuthContext } from '../../context';
 import s from './VideoPlayer.module.css'
 import VolumeIcon from '../UI/VolumeIcon/VolumeIcon'
 import PlayIcon from '../UI/PlayIcon/PlayIcon';
 import LikeIcon from '../UI/LikeIcon/LikeIcon';
 import ArrowDown from '../UI/ArrowDown/ArrowDown';
 import ArrowUp from '../UI/ArrowUp/ArrowUp';
+import ActivitiesService from '../../API/activitiesService';
 
-export default function VideoPlayer({videos, curVideo, setCurVideo, children, like}) {
+export default function VideoPlayer({videos, curVideo, setCurVideo, children, like, preview = false}) {
     const feedEl = useRef();
     const isFirstVid = useRef(true);
     const [isVideosMuted, setIsVideosMuted] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
+    const {curUserData, tokens} = useContext(AuthContext);
+    const [likesOnCurVideo, setLiketOnCurVideo] = useState(0);
+
+    console.log("videos", videos);
+
+    useEffect(() => {
+        if (curUserData) {
+            (async () => {
+                // const res = await ActivitiesService.getUserLikes(tokens.accessToken, curUserData.id);
+                // console.log("liked User videos", res);
+                // const json = await res.text();
+                // console.log("liked User videos", json);
+            })();
+        }
+    }, [curUserData]);
+
+    useEffect(() => {
+        if (like && videos.length) {
+            (async () => {
+                const res = await ActivitiesService.getCountLikes(tokens.accessToken, videos[curVideo].id);
+                console.log("likes on video", res);
+                setLiketOnCurVideo(res);
+            })();
+        }
+    }, [like, videos]);
   
     useEffect(() => {
         if (!videos.length) return;
@@ -43,6 +70,11 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                 </div>
             </div>
         );
+    }
+
+    
+    function likeVideo(e) {
+
     }
 
     function next() {
@@ -84,12 +116,12 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
                 <div className={s.feed} ref={feedEl}>
                     { 
                     videos.map((vid, index) =>
-                        <div className={s.video_block} key={vid}>
+                        <div className={s.video_block} key={vid.id}>
                             {
                             index === curVideo ? 
-                                <video className={s.video + " " + s.video + index} autoPlay muted playsInline loop preload="auto" src={vid}></video> 
+                                <video className={s.video + " " + s.video + index} autoPlay muted playsInline loop preload="auto" src={(preview ? 'http://localhost:3000/' : 'http://localhost:5171/')+vid.fileName}></video> 
                                     :
-                                <video className={s.video + " " + s.video + index} loop preload="auto" src={vid}></video> 
+                                <video className={s.video + " " + s.video + index} loop preload="auto" src={(preview ? 'http://localhost:3000/' : 'http://localhost:5171/')+vid.fileName}></video> 
                             }
                         </div>) 
                     }
@@ -106,7 +138,8 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
 
             {
                 like &&
-                <div className={s.likeBtn}>
+                <div className={s.likeBtn} onClick={likeVideo}>
+                    {likesOnCurVideo}
                     <button>
                         <LikeIcon liked={false}/>
                     </button>

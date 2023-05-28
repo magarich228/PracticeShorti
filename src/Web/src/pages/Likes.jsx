@@ -1,13 +1,30 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useEffect } from 'react'
+import { useState, useContext } from 'react';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import NavBar from '../components/NavBar/NavBar';
 import VideoData from '../components/VideoData/VideoData';
 import Search from '../components/Search/Search';
+import { AuthContext } from '../context';
+import { useRefreshToken } from '../hooks/authHooks';
+import ShortsService from '../API/shortsService';
 
 export default function Likes() {
-    const videos = ["/short4.mp4", "/short2.mp4", "/short3.mp4", "/short1.mp4", "/video1.mp4", "/video2.mp4", "/video3.mp4"];
+    const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
+    const {tokens, curUserData} = useContext(AuthContext);
+
+    useEffect(() => {
+        if (curUserData) {
+            (async () => {
+                const res = await ShortsService.getLikedShorts(tokens.accessToken, curUserData.id);
+                console.log("like", res);
+                const json = await res.json();
+                console.log("like", json);
+
+                setVideos(json);
+            })();
+        }
+    }, [curUserData]);
 
     return (
         <div className="LikesPage">
@@ -17,6 +34,7 @@ export default function Likes() {
                     curVideo={curVideo} 
                     setCurVideo={(curIndex) => setCurVideo(curIndex)} 
                     like={true}
+                    preview={false}
                 >
                     <Search />
                 </VideoPlayer>
@@ -26,7 +44,7 @@ export default function Likes() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>
