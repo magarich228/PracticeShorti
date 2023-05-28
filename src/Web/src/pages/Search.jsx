@@ -5,12 +5,26 @@ import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import NavBar from '../components/NavBar/NavBar';
 import VideoData from '../components/VideoData/VideoData';
 import ShortsService from '../API/shortsService';
+import UserService from '../API/userService';
 
 export default function Search() {
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
     const {tokens} = useContext(AuthContext);
     const {query} = useParams();
+
+    const [targetUser, setTargetUser] = useState({});
+
+    useEffect(() => {
+        if (videos.length) {
+            (async () => {
+                const res = await UserService.getById(tokens.accessToken, videos[curVideo].authorId);
+                const json = await res.json();
+
+                setTargetUser(json);
+            })();
+        }
+    }, [curVideo, videos]);
 
     useEffect(() => {
         if (query) {
@@ -42,7 +56,7 @@ export default function Search() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
+                    <VideoData user={targetUser} subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

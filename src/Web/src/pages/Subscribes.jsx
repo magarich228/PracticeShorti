@@ -6,11 +6,25 @@ import VideoData from '../components/VideoData/VideoData';
 import Search from '../components/Search/Search';
 import ShortsService from '../API/shortsService';
 import { AuthContext } from '../context';
+import UserService from '../API/userService';
 
 export default function Subscribes() {
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
     const {tokens, curUserData} = useContext(AuthContext);
+
+    const [targetUser, setTargetUser] = useState({});
+
+    useEffect(() => {
+        if (videos.length) {
+            (async () => {
+                const res = await UserService.getById(tokens.accessToken, videos[curVideo].authorId);
+                const json = await res.json();
+
+                setTargetUser(json);
+            })();
+        }
+    }, [curVideo, videos]);
 
     useEffect(() => {
         if (curUserData) {
@@ -43,7 +57,7 @@ export default function Subscribes() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
+                    <VideoData user={targetUser} subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

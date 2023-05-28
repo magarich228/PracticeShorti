@@ -1,11 +1,50 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import s from './UserData.module.css'
 import ActivitiesService from '../../API/activitiesService';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context';
+import { useId } from 'react';
 
 export default function UserData({children, subscribeBtn, user}) {
-    const {curUserData} = useContext(AuthContext);
+    const {curUserData, tokens} = useContext(AuthContext);
+    const [curUserSubscriptions, setCurUserSubscriptions] = useState([]);
+
+    useEffect(() => {
+        if (curUserData) {
+            (async () => {
+                const res = await ActivitiesService.getUserSubscriptions(tokens.accessToken, curUserData.id);
+                console.log("curUser Subs", res);
+                const json = await res.json();
+                console.log("curUser Subs", json);
+
+                setCurUserSubscriptions(json.map(el => el.subscriptionId));
+            })();
+        }
+    }, [curUserData]);
+
+    useEffect(() => {
+        if (user && curUserData) {
+
+        }
+    }, [user, curUserData]);
+
+    async function subscribe(e) {
+        if (curUserSubscriptions.includes(user.id)) {
+            const res = await ActivitiesService.unsubsribe(tokens.accessToken, user.id);
+            console.log("unsubs", res);
+            const json = await res.text();
+            console.log("unsubs", json);
+
+            setCurUserSubscriptions(curUserSubscriptions.filter((usrId) => usrId != user.id));
+        } else {
+            const res = await ActivitiesService.subscribe(tokens.accessToken, user.id);
+            console.log("subs", res);
+            const json = await res.json();
+            console.log("subs", json);
+
+            setCurUserSubscriptions([...curUserSubscriptions, user.id]);
+        }
+    } 
 
     if (!user) {
         return (
@@ -57,7 +96,7 @@ export default function UserData({children, subscribeBtn, user}) {
                     </div>
                     <div className={s.btn}>
                         { subscribeBtn && 
-                            (!(user.id === (curUserData ? curUserData.id : "")) ? <button>Подписаться</button> : "")
+                            (!(user.id === (curUserData ? curUserData.id : "")) ? <button onClick={subscribe}>{curUserSubscriptions.includes(user.id) ? "Отписаться" : "Подписаться"}</button> : "")
                         }
                     </div>
                 </div>

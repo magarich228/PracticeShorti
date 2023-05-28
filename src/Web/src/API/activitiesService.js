@@ -1,6 +1,6 @@
 export default class ActivitiesService {
     static async subscribe(accessToken, userId) {
-        const res = await fetch(`http://localhost:5171/api/Activities/${userId}`, {
+        const res = await fetch(`http://localhost:5171/api/Activities/subscribe/${userId}`, {
             method: "POST",
             mode: "cors",
             headers: {
@@ -11,7 +11,7 @@ export default class ActivitiesService {
         return res;
     } 
     static async unsubsribe(accessToken, userId) {
-        const res = await fetch(`http://localhost:5171/api/Activities/${userId}`, {
+        const res = await fetch(`http://localhost:5171/api/Activities/unsubscribe/${userId}`, {
             method: "DELETE",
             mode: "cors",
             headers: {
