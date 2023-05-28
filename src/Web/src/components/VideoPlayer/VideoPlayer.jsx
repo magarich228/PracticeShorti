@@ -15,6 +15,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
     const [isVideosMuted, setIsVideosMuted] = useState(true);
     const [isPaused, setIsPaused] = useState(false);
     const {curUserData, tokens} = useContext(AuthContext);
+    const [likesOnCurVideo, setLiketOnCurVideo] = useState(0);
 
     console.log("videos", videos);
 
@@ -28,6 +29,16 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
             })();
         }
     }, [curUserData]);
+
+    useEffect(() => {
+        if (like && videos.length) {
+            (async () => {
+                const res = await ActivitiesService.getCountLikes(tokens.accessToken, videos[curVideo].id);
+                console.log("likes on video", res);
+                setLiketOnCurVideo(res);
+            })();
+        }
+    }, [like, videos]);
   
     useEffect(() => {
         if (!videos.length) return;
@@ -128,7 +139,7 @@ export default function VideoPlayer({videos, curVideo, setCurVideo, children, li
             {
                 like &&
                 <div className={s.likeBtn} onClick={likeVideo}>
-                    10
+                    {likesOnCurVideo}
                     <button>
                         <LikeIcon liked={false}/>
                     </button>

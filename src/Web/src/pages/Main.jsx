@@ -16,7 +16,7 @@ export default function Main() {
     const getShorts = useRefreshToken(ShortsService.getShorts);
     const [page, setPage] = useState(1);
     // const [totalCount, setTotalCount] = useState(1);
-    const videosCount = 2;
+    const videosCount = 20;
 
     useEffect(() => {
         (async () => {
@@ -47,7 +47,7 @@ export default function Main() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

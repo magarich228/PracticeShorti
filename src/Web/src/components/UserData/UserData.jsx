@@ -1,15 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import s from './UserData.module.css'
 import ActivitiesService from '../../API/activitiesService';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context';
 
 export default function UserData({children, subscribeBtn, user}) {
-
-    useEffect(() => {
-        if (user) {
-            
-        }
-    }, [user]);
+    const {curUserData} = useContext(AuthContext);
 
     if (!user) {
         return (
@@ -61,7 +57,7 @@ export default function UserData({children, subscribeBtn, user}) {
                     </div>
                     <div className={s.btn}>
                         { subscribeBtn && 
-                            <button>Подписаться</button>
+                            (!(user.id === (curUserData ? curUserData.id : "")) ? <button>Подписаться</button> : "")
                         }
                     </div>
                 </div>

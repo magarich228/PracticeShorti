@@ -3,10 +3,12 @@ import s from "./VideoData.module.css"
 import UserData from '../UserData/UserData'
 import UserService from '../../API/userService';
 import { AuthContext } from '../../context';
+import ActivitiesService from '../../API/activitiesService';
 
 export default function VideoData({curVideo, subscribeBtn}) {
     const {tokens} = useContext(AuthContext);
     const [curVideoUser, setCurVideoUser] = useState(null);
+    const [countSubsAuthor, setCountSubsAuthor] = useState(0);
     
     useEffect(() => {
         if (curVideo) {
@@ -20,6 +22,17 @@ export default function VideoData({curVideo, subscribeBtn}) {
             })();
         }
     }, [curVideo]);
+
+    useEffect(() => {
+        if (curVideoUser) {
+            (async () => {
+                const count = await ActivitiesService.getCountSubs(tokens.accessToken, curVideoUser.id);
+                console.log("user subs count", count);
+
+                setCountSubsAuthor(count);
+            })();
+        }
+    }, [curVideoUser]);
 
     if (!curVideo) {
         return (
@@ -54,6 +67,9 @@ export default function VideoData({curVideo, subscribeBtn}) {
                     <li className={s.tag}>#{"тег"}</li>
                     <li className={s.tag}>#{"тег"}</li>
                 </ul> */}
+            </div>
+            <div className={s.subs}>
+                Подписчиков: <strong>{countSubsAuthor}</strong>
             </div>
         </div>
     )

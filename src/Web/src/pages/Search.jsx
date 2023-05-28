@@ -42,7 +42,7 @@ export default function Search() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData curVideo={videos[curVideo]} />
+                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>
