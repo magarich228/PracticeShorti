@@ -6,13 +6,14 @@ import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import Search from '../components/Search/Search';
 import VideoData from '../components/VideoData/VideoData';
 import ShortsService from '../API/shortsService';
+import UserService from '../API/userService';
 
 export default function Profile() {
     const {id} = useParams();
-    const {curUserData} = useContext(AuthContext);
+    const {curUserData, tokens} = useContext(AuthContext);
     const [videos, setVideos] = useState([]); 
     const [curVideo, setCurVideo] = useState(0);
-    const {tokens} = useContext(AuthContext);
+    const [targetUser, setTargetUser] = useState({});
 
     useEffect(() => {
         if (curUserData) {
@@ -28,6 +29,17 @@ export default function Profile() {
             })();
         }
     }, [curUserData, id]);
+
+    useEffect(() => {
+        if (id) {
+            (async () => {
+                const res = await UserService.getById(tokens.accessToken, id);
+                const json = await res.json();
+
+                setTargetUser(json);
+            })();
+        }
+    }, [id]);
 
     return (
         <div className="MainPage">
@@ -47,7 +59,7 @@ export default function Profile() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData subscribeBtn={true} curVideo={videos[curVideo]} />
+                    <VideoData user={targetUser} subscribeBtn={true} curVideo={videos[curVideo]} />
                 </div>
             </aside>
         </div>

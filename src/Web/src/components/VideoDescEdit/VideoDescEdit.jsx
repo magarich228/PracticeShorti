@@ -6,7 +6,7 @@ import ShortsService from '../../API/shortsService';
 
 export default function VideoDescEdit({onVideoLoad}) {
     const form = useRef();
-    const {tokens} = useContext(AuthContext);
+    const {tokens, curUserData} = useContext(AuthContext);
 
     function publicate(e) {
         e.preventDefault();
@@ -31,7 +31,7 @@ export default function VideoDescEdit({onVideoLoad}) {
 
     return (
         <div className={s.container}>
-            <UserData subscribeBtn={false}>
+            <UserData user={curUserData} subscribeBtn={false}>
                 <span>Сегодня</span>
             </UserData>
             <div className={s.desc}>

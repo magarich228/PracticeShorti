@@ -13,8 +13,6 @@ export default function Profile() {
     const {tokens, setCurUserData, curUserData} = useContext(AuthContext);
     const avatarForm = useRef();
 
-    console.log(avatarForm);
-
     useEffect(() => {
         if (curUserData) {
             (async () => {
@@ -65,7 +63,7 @@ export default function Profile() {
                     <NavBar />
                 </nav>
                 <div className="AsideContent">
-                    <VideoData subscribeBtn={false} curVideo={videos[curVideo]} />
+                    <VideoData user={curUserData} subscribeBtn={false} curVideo={videos[curVideo]} />
                     <form ref={avatarForm} className='avatarUpdateForm' method='PUT' onSubmit={onAvatarSend}>
                         <input name='avatar' type="file" accept='image/png, image/jpeg' />
                         <button type='submit'>Загрузить аватарку</button>
