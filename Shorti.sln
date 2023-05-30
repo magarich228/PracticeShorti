@@ -37,9 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shorti.Identity.Tests", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Activities", "Activities", "{DAEEC64E-5325-47CE-9535-6B2878F0F3AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Activities.Api", "src\Services\Activities\Shorti.Activities.Api\Shorti.Activities.Api.csproj", "{E332E283-92ED-4DC2-ABCA-722379787D84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shorti.Activities.Api", "src\Services\Activities\Shorti.Activities.Api\Shorti.Activities.Api.csproj", "{E332E283-92ED-4DC2-ABCA-722379787D84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shorti.Activities.Tests", "src\Services\Activities\Shorti.Activities.Tests\Shorti.Activities.Tests.csproj", "{B56179BD-BCFF-410C-91DD-13D0A545B7DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shorti.Activities.Tests", "src\Services\Activities\Shorti.Activities.Tests\Shorti.Activities.Tests.csproj", "{B56179BD-BCFF-410C-91DD-13D0A545B7DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{978A6092-0397-444F-AFF2-519027628AF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,7 @@ Global
 		{DAEEC64E-5325-47CE-9535-6B2878F0F3AD} = {F7A86D71-C550-466C-9820-197EC27BEC9C}
 		{E332E283-92ED-4DC2-ABCA-722379787D84} = {DAEEC64E-5325-47CE-9535-6B2878F0F3AD}
 		{B56179BD-BCFF-410C-91DD-13D0A545B7DB} = {DAEEC64E-5325-47CE-9535-6B2878F0F3AD}
+		{978A6092-0397-444F-AFF2-519027628AF6} = {F7A86D71-C550-466C-9820-197EC27BEC9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDF9774F-1A58-408A-AAA2-B8F9822EBE6C}
