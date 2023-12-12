@@ -99,7 +99,8 @@ namespace Shorti.ShortsService.Api.Controllers
             [FromForm] NewShortVideoDto shortVideoDto,
             [FromServices] IIdentityServiceClient identityServiceClient)
         {
-            var validationResult = await _fileService.ValidateFile(shortVideoDto.File);
+            var validationResult = (await _fileService.ValidateFile(shortVideoDto.File))
+                .ToList();
 
             if (validationResult.Any())
             {
