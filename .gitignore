@@ -33,3 +33,5 @@ bld/
 TestResult.xml
 
 tests-results/
+
+.idea/
